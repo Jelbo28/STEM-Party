@@ -30,7 +30,7 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         float dist = Vector3.Distance(gameObject.transform.position, tiles[num].transform.position/* + tileOffset*/);
-        if (Input.GetButtonDown("A Button"))
+        if (Input.GetButtonDown("A Button") || Input.GetKeyDown(KeyCode.Space))
         {
             rollNum = Mathf.RoundToInt(Random.Range(1, 6));
             go = true;
