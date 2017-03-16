@@ -35,7 +35,7 @@ public class Player : MonoBehaviour {
             rollNum = Mathf.RoundToInt(Random.Range(1, 6));
             go = true;
         }
-        if (go)
+        if (go && rollNum > 0)
         {
             if(dist > minDist)
             {
