@@ -11,7 +11,7 @@ public class Player : MonoBehaviour {
     [SerializeField]
     int rollNum;
     [SerializeField]
-    private int num = 0;
+    private int num = 1;
 
     [SerializeField]
     private float minDist;
@@ -29,6 +29,7 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //if (num == 0) num++;
         float dist = Vector3.Distance(gameObject.transform.position, tiles[num].transform.position/* + tileOffset*/);
         if (Input.GetButtonDown("A Button") || Input.GetKeyDown(KeyCode.Space))
         {
