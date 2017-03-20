@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour {
     [SerializeField]
     Tile[] tiles;
+    [SerializeField]
+    bool turn = false;
     //[SerializeField]
     //Vector3 offset;
     //private Vector3 tileOffset;
@@ -21,23 +23,23 @@ public class Player : MonoBehaviour {
     private bool go = false;
 
     private Transform target;
+    private ParticleSystem exhaust;
 	// Use this for initialization
 	void Start () {
         tiles = GameObject.Find("Points").GetComponentsInChildren<Tile>();
+        exhaust = GetComponentInChildren<ParticleSystem>();
         //tileOffset = Vector3.zero;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        TakeTurn();
         //if (num == 0) num++;
         float dist = Vector3.Distance(gameObject.transform.position, tiles[num].transform.position/* + tileOffset*/);
-        if (Input.GetButtonDown("A Button") || Input.GetKeyDown(KeyCode.Space))
-        {
-            rollNum = Mathf.RoundToInt(Random.Range(1, 6));
-            go = true;
-        }
+
         if (go && rollNum > 0)
         {
+            exhaust.Play();
             if(dist > minDist)
             {
                 Move();
@@ -65,6 +67,7 @@ public class Player : MonoBehaviour {
                         if (rollNum <= 0)
                         {
                             gameObject.transform.LookAt(tiles[num].transform.position/* + tileOffset*/);
+                        exhaust.Stop();
                             go = false;
                         }
                     }
@@ -76,5 +79,17 @@ public class Player : MonoBehaviour {
     {
         gameObject.transform.LookAt(tiles[num].transform.position/* + tileOffset*/);
         gameObject.transform.position += gameObject.transform.forward * speed * Time.deltaTime;
+    }
+
+    void TakeTurn()
+    {
+        if (turn == true)
+        {
+            if (Input.GetButtonDown("A Button") || Input.GetKeyDown(KeyCode.Space))
+            {
+                rollNum = Mathf.RoundToInt(Random.Range(1, 6));
+                //go = true;
+            }
+        }
     }
 }
