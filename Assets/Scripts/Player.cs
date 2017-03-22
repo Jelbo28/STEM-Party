@@ -23,11 +23,13 @@ public class Player : MonoBehaviour {
     private bool go = false;
 
     private Transform target;
+    private Animator anim;
     private ParticleSystem exhaust;
 	// Use this for initialization
 	void Start () {
         tiles = GameObject.Find("Points").GetComponentsInChildren<Tile>();
         exhaust = GetComponentInChildren<ParticleSystem>();
+        anim = GetComponent<Animator>();
         //tileOffset = Vector3.zero;
 	}
 	
@@ -85,9 +87,11 @@ public class Player : MonoBehaviour {
     {
         if (turn == true)
         {
-            if (Input.GetButtonDown("A Button") || Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetButtonDown("A Button") || Input.GetKeyDown(KeyCode.Space) && !go)
             {
-                rollNum = Mathf.RoundToInt(Random.Range(1, 6));
+                // transform.Translate(Vector3.up * 260 * Time.deltaTime, Space.World);
+                anim.SetTrigger("Jump");
+                //rollNum = Mathf.RoundToInt(Random.Range(1, 6));
                 //go = true;
             }
         }

@@ -43,12 +43,12 @@ public class TextManager : MonoBehaviour {
 
            creditComponents[i].SetActive(true);
             i++;
-            if (i > creditComponents.Length)
+            if (i >= creditComponents.Length)
             {
                 StopAllCoroutines();
             }
 
-            Debug.Log("Bobbbbb");
+            //Debug.Log("Bobbbbb");
         }
 
     }

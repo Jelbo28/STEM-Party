@@ -6,6 +6,7 @@ public class GM : MonoBehaviour {
 
     [SerializeField]
     private Player[] players;
+    [SerializeField]
 
 	// Use this for initialization
 	void Start () {
