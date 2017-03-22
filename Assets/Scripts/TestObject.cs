@@ -5,6 +5,9 @@ public class TestObject : PoolObject
     [SerializeField]
     float speed;
 
+    [SerializeField]
+    GameObject explosion;
+
     void Update()
     {
         //transform.Translate(new Vector3(1, 1, 1) * speed * Time.smoothDeltaTime);
@@ -12,8 +15,14 @@ public class TestObject : PoolObject
         transform.Rotate(0, 0, speed * Time.deltaTime * 5);
     }
 
-    public override void OnObjectReuse()
+    public void Explode()
     {
-
+        Instantiate(explosion, transform.position, Quaternion.identity);
+        gameObject.SetActive(false);
     }
+
+    //public override void OnObjectReuse()
+    //{
+
+    //}
 }
