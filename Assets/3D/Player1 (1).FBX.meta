@@ -1,0 +1,176 @@
+fileFormatVersion: 2
+guid: 33962fe6bd6e43846a26d30a9a4c4e03
+timeCreated: 1490708640
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Capsule005
+    100002: Capsule006
+    100004: ChamferCyl011
+    100006: ChamferCyl012
+    100008: ChamferCyl013
+    100010: Colored Parts003
+    100012: Cylinder013
+    100014: Cylinder014
+    100016: Cylinder015
+    100018: Cylinder016
+    100020: Nose001
+    100022: Object005
+    100024: Object005_MeshPart0
+    100026: Object005_MeshPart1
+    100028: Object005_MeshPart2
+    100030: Object005_MeshPart3
+    100032: Object005_MeshPart4
+    100034: //RootNode
+    100036: Sphere010
+    100038: Sphere012
+    100040: Sphere014
+    400000: Capsule005
+    400002: Capsule006
+    400004: ChamferCyl011
+    400006: ChamferCyl012
+    400008: ChamferCyl013
+    400010: Colored Parts003
+    400012: Cylinder013
+    400014: Cylinder014
+    400016: Cylinder015
+    400018: Cylinder016
+    400020: Nose001
+    400022: Object005
+    400024: Object005_MeshPart0
+    400026: Object005_MeshPart1
+    400028: Object005_MeshPart2
+    400030: Object005_MeshPart3
+    400032: Object005_MeshPart4
+    400034: //RootNode
+    400036: Sphere010
+    400038: Sphere012
+    400040: Sphere014
+    2300000: Capsule005
+    2300002: Capsule006
+    2300004: ChamferCyl011
+    2300006: ChamferCyl012
+    2300008: ChamferCyl013
+    2300010: Colored Parts003
+    2300012: Cylinder013
+    2300014: Cylinder014
+    2300016: Cylinder015
+    2300018: Cylinder016
+    2300020: Nose001
+    2300022: Object005_MeshPart0
+    2300024: Object005_MeshPart1
+    2300026: Object005_MeshPart2
+    2300028: Object005_MeshPart3
+    2300030: Object005_MeshPart4
+    2300032: Sphere010
+    2300034: Sphere012
+    2300036: Sphere014
+    3300000: Capsule005
+    3300002: Capsule006
+    3300004: ChamferCyl011
+    3300006: ChamferCyl012
+    3300008: ChamferCyl013
+    3300010: Colored Parts003
+    3300012: Cylinder013
+    3300014: Cylinder014
+    3300016: Cylinder015
+    3300018: Cylinder016
+    3300020: Nose001
+    3300022: Object005_MeshPart0
+    3300024: Object005_MeshPart1
+    3300026: Object005_MeshPart2
+    3300028: Object005_MeshPart3
+    3300030: Object005_MeshPart4
+    3300032: Sphere010
+    3300034: Sphere012
+    3300036: Sphere014
+    4300000: Cylinder013
+    4300002: Colored Parts003
+    4300004: Cylinder014
+    4300006: ChamferCyl011
+    4300008: Sphere010
+    4300010: Cylinder015
+    4300012: ChamferCyl013
+    4300014: Cylinder016
+    4300016: ChamferCyl012
+    4300018: Capsule005
+    4300020: Sphere012
+    4300022: Nose001
+    4300024: Capsule006
+    4300026: Sphere014
+    4300028: Object005_MeshPart0
+    4300030: Object005_MeshPart1
+    4300032: Object005_MeshPart2
+    4300034: Object005_MeshPart3
+    4300036: Object005_MeshPart4
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
