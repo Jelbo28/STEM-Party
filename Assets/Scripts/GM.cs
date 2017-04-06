@@ -7,14 +7,25 @@ public class GM : MonoBehaviour {
     [SerializeField]
     private Player[] players;
     [SerializeField]
-
+    private bool newGame;
+    private DisplayManager dispManager;
 	// Use this for initialization
 	void Start () {
-        players = GameObject.FindObjectsOfType<Player>();
+        if (newGame)
+        {
+            BeginGame();
+        }
+        players = GameObject.Find("Players").GetComponentsInChildren<Player>();
+        dispManager = GameObject.FindObjectOfType<DisplayManager>();
 	}
 	
 	public void NewTurn()
     {
 
+    }
+
+    void BeginGame()
+    {
+        dispManager.GameStart();
     }
 }
