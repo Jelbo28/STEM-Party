@@ -37,9 +37,13 @@ public class CameraFollow : MonoBehaviour
     [SerializeField]
      float turnSpeed = 2.0f;
     [SerializeField]
+    float rotateSpeed;
+    [SerializeField]
     float panSpeed = 2.0f;
     [SerializeField]
     float zoomSpeed = 2.0f;
+    [SerializeField]
+    float zoomSpeedA = 2.0f;
     [SerializeField]
     float shiftBoost = 0.0f;
      
@@ -54,33 +58,25 @@ public class CameraFollow : MonoBehaviour
 
     void Update()
     {
-        Vector3 relativePos = (target.position + new Vector3(0, 1.5f, 0)) - transform.position;
+        Vector3 relativePos = target.position - transform.position;
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         Quaternion current = transform.localRotation;
 
-        transform.localRotation = Quaternion.Slerp(current, rotation, Time.deltaTime);
+        transform.localRotation = Quaternion.Slerp(current, rotation, rotateSpeed * Time.deltaTime);
         //transform.Translate(0, 0, Time.deltaTime);
+        shiftBoost = Input.GetKey(KeyCode.LeftShift) ? 2.0f : 0.0f;
 
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            shiftBoost = 2.0f;
-        }
-        else
-        {
-            shiftBoost = 0.0f;
-        }
         if (Input.GetMouseButtonDown(0))
         {
             mouseOrigin = Input.mousePosition;
             isRotating = true;
         }
 
-        //if (Input.GetMouseButtonDown(1))
-        //{
-        //    mouseOrigin = Input.mousePosition;
-        //    isPanning = true;
-        //}
+        if (Input.GetMouseButtonDown(1))
+        {
+            mouseOrigin = Input.mousePosition;
+            isPanning = true;
+        }
 
         if (Input.GetMouseButtonDown(2))
         {
@@ -96,7 +92,7 @@ public class CameraFollow : MonoBehaviour
         {
             Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
 
-            transform.RotateAround(transform.position, transform.right, -pos.y * ((turnSpeed + shiftBoost) + shiftBoost));
+            //transform.RotateAround(transform.position, transform.right, -pos.y * ((turnSpeed + shiftBoost) + shiftBoost));
             transform.RotateAround(transform.position, Vector3.up, pos.x * (turnSpeed + shiftBoost));
         }
 
@@ -115,12 +111,12 @@ public class CameraFollow : MonoBehaviour
             Vector3 move = pos.y * (zoomSpeed + shiftBoost) * transform.forward;
             transform.Translate(move, Space.World);
         }
+        ZoomRange();
     }
 
     void ZoomRange()
     {
         zoom = (Vector3.Distance(transform.position, target.position) > 20) ?   Vector3.up : (Vector3.Distance(transform.position, target.position) < 2) ? Vector3.down : Vector3.zero;
-
-
+        transform.Translate((zoom.y/10) * (zoomSpeedA + shiftBoost) * transform.forward, Space.World);
     }
 }
