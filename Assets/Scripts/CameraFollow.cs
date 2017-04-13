@@ -46,15 +46,14 @@ public class CameraFollow : MonoBehaviour
     float zoomSpeedA = 2.0f;
     [SerializeField]
     float shiftBoost = 0.0f;
+    [SerializeField]
+    Vector2 zoomRange;
      
 
     private Vector3 mouseOrigin;   
     private bool isPanning;     
     private bool isRotating;   
     private bool isZooming;
-
-    public Vector3 zoom = Vector3.zero;
-    //private Vector3 zoomOut = Vector3.up;
 
     void Update()
     {
@@ -64,29 +63,29 @@ public class CameraFollow : MonoBehaviour
 
         transform.localRotation = Quaternion.Slerp(current, rotation, rotateSpeed * Time.deltaTime);
         //transform.Translate(0, 0, Time.deltaTime);
-        shiftBoost = Input.GetKey(KeyCode.LeftShift) ? 2.0f : 0.0f;
+        shiftBoost = Input.GetKey(KeyCode.LeftShift) ? 1.2f : 0.0f;
 
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    mouseOrigin = Input.mousePosition;
+        //    isRotating = true;
+        //}
         if (Input.GetMouseButtonDown(0))
         {
             mouseOrigin = Input.mousePosition;
-            isRotating = true;
+            isZooming = true;
         }
-
         if (Input.GetMouseButtonDown(1))
         {
             mouseOrigin = Input.mousePosition;
             isPanning = true;
         }
 
-        if (Input.GetMouseButtonDown(2))
-        {
-            mouseOrigin = Input.mousePosition;
-            isZooming = true;
-        }
 
-        if (!Input.GetMouseButton(0)) isRotating = false;
+
+        //if (!Input.GetMouseButton(0)) isRotating = false;
+        if (!Input.GetMouseButton(0)) isZooming = false;
         if (!Input.GetMouseButton(1)) isPanning = false;
-        if (!Input.GetMouseButton(2)) isZooming = false;
 
         if (isRotating)
         {
@@ -116,7 +115,7 @@ public class CameraFollow : MonoBehaviour
 
     void ZoomRange()
     {
-        zoom = (Vector3.Distance(transform.position, target.position) > 20) ?   Vector3.up : (Vector3.Distance(transform.position, target.position) < 2) ? Vector3.down : Vector3.zero;
+        Vector3 zoom = (Vector3.Distance(transform.position, target.position) > zoomRange.y) ?   Vector3.up * (Vector3.Distance(transform.position, target.position)) : (Vector3.Distance(transform.position, target.position) < zoomRange.x) ? Vector3.down : Vector3.zero;
         transform.Translate((zoom.y/10) * (zoomSpeedA + shiftBoost) * transform.forward, Space.World);
     }
 }
