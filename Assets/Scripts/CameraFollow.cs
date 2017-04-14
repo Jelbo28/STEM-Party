@@ -118,4 +118,11 @@ public class CameraFollow : MonoBehaviour
         Vector3 zoom = (Vector3.Distance(transform.position, target.position) > zoomRange.y) ?   Vector3.up * (Vector3.Distance(transform.position, target.position)) : (Vector3.Distance(transform.position, target.position) < zoomRange.x) ? Vector3.down : Vector3.zero;
         transform.Translate((zoom.y/10) * (zoomSpeedA + shiftBoost) * transform.forward, Space.World);
     }
+
+    public void SetTarget(Transform toSet)
+    {
+        target = toSet;
+    }
 }
+
+
