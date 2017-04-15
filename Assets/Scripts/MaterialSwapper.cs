@@ -8,10 +8,8 @@ public class MaterialSwapper : MonoBehaviour
     float swapSpeed;
     [SerializeField]
     bool random = true;
-    [SerializeField]
-    private bool reset = false;
-    [SerializeField]
-    private bool stop = false;
+    public bool reset = false;
+    public bool stop = false;
     [SerializeField]
     Material[] facesTextures;
     private Renderer thisRenderer;
@@ -37,7 +35,6 @@ public class MaterialSwapper : MonoBehaviour
         int oldI = 0;
         while (!stop)
         {
-            yield return new WaitForSeconds(swapSpeed);
             if (random)
             {
                 while (i == oldI)
@@ -53,6 +50,7 @@ public class MaterialSwapper : MonoBehaviour
                 thisRenderer.material = facesTextures[i];
                 oldI = i + 1;
             }
+            yield return new WaitForSeconds(swapSpeed);
         }
     }
 }
