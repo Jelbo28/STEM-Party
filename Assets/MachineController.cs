@@ -12,7 +12,8 @@ public class MachineController : MonoBehaviour {
     {
         for (int i = 0; i < transform.childCount; i++)
         {
-            parts[i] = transform.GetChild(i).GetComponent<BrokenPart>();
+            if (transform.GetChild(i).GetComponent<BrokenPart>() == true)
+                parts[i] = transform.GetChild(i).GetComponent<BrokenPart>();
         }
     }
 

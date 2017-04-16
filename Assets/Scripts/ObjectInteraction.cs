@@ -43,10 +43,11 @@ public class ObjectInteraction : MonoBehaviour {
             {
                 hit.transform.GetComponent<BrokenPart>().health -= damage;
 
-                if (hit.transform.GetComponent<BrokenPart>().health <= 0)
+                if (hit.transform.GetComponent<BrokenPart>().health <= 0 && hit.transform.GetComponent<BrokenPart>().broken)
                 {
                     hit.transform.parent.GetComponent<MachineController>().ChangePart(hit.transform.GetComponent<BrokenPart>(), true);
                     hit.transform.GetComponent<BrokenPart>().health = hit.transform.GetComponent<BrokenPart>().origHealth;
+                    hit.transform.GetComponent<BrokenPart>().broken = false;
                     parts++;
                     fixCount.text = parts + "/" + 4;
                 }

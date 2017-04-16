@@ -9,6 +9,7 @@ public class BrokenPart : MonoBehaviour {
     public bool swapMaterial;
     public bool swapChildState;
     public bool enableSwapper;
+    public bool broken = true;
 
     public Mesh toMesh;
     public Material toMaterial;
