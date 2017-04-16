@@ -1,36 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine;
 
-public class ObjectInteraction : MonoBehaviour {
-    [SerializeField]
-    private float damage;
-    [SerializeField]
-    private float viewDistance;
-    [SerializeField]
-    private GameObject indexCard;
-    [SerializeField]
-    private Image crosshair;
-    [SerializeField]
-    private Color crosshairNormal;
-    [SerializeField]
-    private Color crosshairHighlight;
-    [SerializeField]
-    private Text fixCount;
+public class ObjectInteraction : MonoBehaviour
+{
+    [SerializeField] private float damage;
+    [SerializeField] private float viewDistance;
+    [SerializeField] private GameObject indexCard;
+    [SerializeField] private Image crosshair;
+    [SerializeField] private Color crosshairNormal;
+    [SerializeField] private Color crosshairHighlight;
+    [SerializeField] private Text fixCount;
 
-    private int parts = 0;
+    private int parts;
     private bool indexUp;
 
-    void Update()
+    private void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, viewDistance))
         {
             Debug.DrawLine(ray.origin, hit.point);
-            
+
             if (hit.transform.tag == "Interactable")
             {
                 indexCard.GetComponent<Animator>().SetTrigger("SlideUp");
@@ -43,10 +35,13 @@ public class ObjectInteraction : MonoBehaviour {
             {
                 hit.transform.GetComponent<BrokenPart>().health -= damage;
 
-                if (hit.transform.GetComponent<BrokenPart>().health <= 0 && hit.transform.GetComponent<BrokenPart>().broken)
+                if (hit.transform.GetComponent<BrokenPart>().health <= 0 &&
+                    hit.transform.GetComponent<BrokenPart>().broken)
                 {
-                    hit.transform.parent.GetComponent<MachineController>().ChangePart(hit.transform.GetComponent<BrokenPart>(), true);
-                    hit.transform.GetComponent<BrokenPart>().health = hit.transform.GetComponent<BrokenPart>().origHealth;
+                    hit.transform.parent.GetComponent<MachineController>()
+                        .ChangePart(hit.transform.GetComponent<BrokenPart>(), true);
+                    hit.transform.GetComponent<BrokenPart>().health =
+                        hit.transform.GetComponent<BrokenPart>().origHealth;
                     hit.transform.GetComponent<BrokenPart>().broken = false;
                     parts++;
                     fixCount.text = parts + "/" + 4;
@@ -55,7 +50,7 @@ public class ObjectInteraction : MonoBehaviour {
         }
         else
         {
-            if(indexUp)
+            if (indexUp)
             {
                 indexCard.GetComponent<Animator>().SetTrigger("SlideDown");
                 indexUp = false;

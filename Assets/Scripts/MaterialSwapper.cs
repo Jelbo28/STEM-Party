@@ -1,25 +1,21 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MaterialSwapper : MonoBehaviour
 {
-    [SerializeField]
-    float swapSpeed;
-    [SerializeField]
-    bool random = true;
-    public bool reset = false;
+    [SerializeField] private float swapSpeed;
+    [SerializeField] private bool random = true;
+    public bool reset;
     public bool stop = false;
-    [SerializeField]
-    Material[] facesTextures;
+    [SerializeField] private Material[] facesTextures;
     private Renderer thisRenderer;
 
-    void Start()
+    private void Start()
     {
         thisRenderer = GetComponent<MeshRenderer>();
     }
 
-    void Update()
+    private void Update()
     {
         if (!reset)
         {
@@ -29,10 +25,10 @@ public class MaterialSwapper : MonoBehaviour
         }
     }
 
-    IEnumerator Rolling()
+    private IEnumerator Rolling()
     {
-        int i = 0;
-        int oldI = 0;
+        var i = 0;
+        var oldI = 0;
         while (!stop)
         {
             if (random)
@@ -46,7 +42,7 @@ public class MaterialSwapper : MonoBehaviour
             }
             else
             {
-                    i = oldI < facesTextures.Length ? oldI : 0;
+                i = oldI < facesTextures.Length ? oldI : 0;
                 thisRenderer.material = facesTextures[i];
                 oldI = i + 1;
             }

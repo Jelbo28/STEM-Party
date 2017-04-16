@@ -14,9 +14,4 @@ public class PlayerInfo : MonoBehaviour {
     int mingamePts;
     [SerializeField]
     int totalPts;
-
-    void Start()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
 }

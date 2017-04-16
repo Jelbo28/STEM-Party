@@ -1,30 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class MachineController : MonoBehaviour {
-    [SerializeField]
-    int playerNum;
-    [SerializeField]
-    List<BrokenPart> parts;
-    [SerializeField]
-    private bool reset;
-    [SerializeField]
-    private bool AIControl = false;
-    [SerializeField]
-    private Vector2 AITimerRange;
-    [SerializeField]
-    private float AITimer;
+public class MachineController : MonoBehaviour
+{
+    [SerializeField] private int playerNum;
+    [SerializeField] private List<BrokenPart> parts;
+    [SerializeField] private bool reset;
+    [SerializeField] private readonly bool AIControl = false;
+    [SerializeField] private Vector2 AITimerRange;
+    [SerializeField] private float AITimer;
     private MinigameController manager;
     private PlayerInfo[] players;
     private PlayerInfo thisPlayer;
-	
-    void Start()
+
+    private void Start()
     {
         players = FindObjectsOfType<PlayerInfo>();
         thisPlayer = players[playerNum - 1];
         manager = FindObjectOfType<MinigameController>();
-        for (int i = 0; i < transform.childCount; i++)
+        for (var i = 0; i < transform.childCount; i++)
         {
             if (transform.GetChild(i).GetComponent<BrokenPart>() == true)
                 parts.Add(transform.GetChild(i).GetComponent<BrokenPart>());
@@ -32,11 +26,11 @@ public class MachineController : MonoBehaviour {
         AITimer = Random.Range(AITimerRange.x, AITimerRange.y);
     }
 
-	void Update () {
-
+    private void Update()
+    {
         if (reset)
         {
-            for (int i = 0; i < parts.Count; i++)
+            for (var i = 0; i < parts.Count; i++)
             {
                 ChangePart(parts[i], false);
             }
@@ -45,13 +39,13 @@ public class MachineController : MonoBehaviour {
         AI();
     }
 
-    void AI()
+    private void AI()
     {
         //List<int> parts = new List<int>();
         AITimer -= Time.deltaTime;
         if (AIControl && AITimer <= 0)
         {
-            int partNum = Mathf.RoundToInt(Random.Range(0, parts.Count));
+            var partNum = Mathf.RoundToInt(Random.Range(0, parts.Count));
             parts.Remove(parts[partNum]);
             if (parts.Count <= 0)
             {
@@ -66,7 +60,6 @@ public class MachineController : MonoBehaviour {
 
     public void ChangePart(BrokenPart part, bool fix)
     {
-
         if (part.swapMesh)
         {
             if (fix)
@@ -126,30 +119,31 @@ public class MachineController : MonoBehaviour {
     }
 
 
-    void ChangeMesh(Mesh newMesh, BrokenPart target)
+    private void ChangeMesh(Mesh newMesh, BrokenPart target)
     {
         target.GetComponent<MeshFilter>().sharedMesh = newMesh;
     }
 
-    void ChangeMaterial(Material newMaterial, BrokenPart target)
+    private void ChangeMaterial(Material newMaterial, BrokenPart target)
     {
         target.GetComponent<MeshRenderer>().sharedMaterial = newMaterial;
     }
 
-    void EnableChild(BrokenPart target, bool enable)
-    {
-        target.transform.GetChild(0).gameObject.SetActive(enable);
-    }
+    //private void EnableChild(BrokenPart target, bool enable)
+    //{
+    //    target.transform.GetChild(0).gameObject.SetActive(enable);
+    //}
 
-    void ToggleChild(BrokenPart target)
+    private void ToggleChild(BrokenPart target)
     {
-        for (int i = 0; i < target.transform.childCount; i++)
+        for (var i = 0; i < target.transform.childCount; i++)
         {
-            target.transform.GetChild(i).gameObject.SetActive(!target.transform.GetChild(i).gameObject.activeInHierarchy);
+            target.transform.GetChild(i)
+                .gameObject.SetActive(!target.transform.GetChild(i).gameObject.activeInHierarchy);
         }
     }
 
-    void EnableSwapper(BrokenPart target, bool enable)
+    private void EnableSwapper(BrokenPart target, bool enable)
     {
         target.GetComponent<MaterialSwapper>().stop = !enable;
         target.GetComponent<MaterialSwapper>().reset = !enable;

@@ -1,33 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ObjectSpewer : MonoBehaviour {
-    [SerializeField]
-    GameObject toSpew;
-    [SerializeField]
-    Transform[] spawnAreas;
-    [SerializeField]
-    float forceStrength;
-    [SerializeField]
-    float spawnRange;
-    [SerializeField]
-    private Vector2 spewAmmountRange;
+public class ObjectSpewer : MonoBehaviour
+{
+    [SerializeField] private GameObject toSpew;
+    [SerializeField] private Transform[] spawnAreas;
+    [SerializeField] private float forceStrength;
+    [SerializeField] private float spawnRange;
+    [SerializeField] private Vector2 spewAmmountRange;
 
-    public bool go = false;
+    public bool go;
     private int randTransform;
     private GameObject tempSpew;
     private Rigidbody tempSpewRB;
 
 
-    void Start()
+    private void Start()
     {
         spawnAreas = GetComponentsInChildren<Transform>();
     }
 
-    void Update()
+    private void Update()
     {
-        if (/*Input.GetKeyDown(KeyCode.Space)*/go)
+        if ( /*Input.GetKeyDown(KeyCode.Space)*/go)
         {
             for (int j = 0; j < spawnAreas.Length; j++)
             {
@@ -35,10 +29,10 @@ public class ObjectSpewer : MonoBehaviour {
 
                 for (int i = 0; i < rand; i++)
                 {
-
-                    tempSpew = Instantiate(toSpew, spawnAreas[j].position + (Random.insideUnitSphere * spawnRange), Quaternion.LookRotation(Vector3.forward)) as GameObject;
+                    tempSpew = Instantiate(toSpew, spawnAreas[j].position + (Random.insideUnitSphere*spawnRange),
+                        Quaternion.LookRotation(Vector3.forward));
                     tempSpewRB = tempSpew.GetComponent<Rigidbody>();
-                    tempSpewRB.velocity = (Vector3.forward * forceStrength);
+                    tempSpewRB.velocity = (Vector3.forward*forceStrength);
                 }
             }
             go = false;
