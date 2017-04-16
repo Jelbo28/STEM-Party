@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TheForce : MonoBehaviour {
-
+    [SerializeField]
+    string highlightName;
 
     [SerializeField]
     float timer = 0.005f;
@@ -13,6 +14,7 @@ public class TheForce : MonoBehaviour {
     {
         target = GetComponent<Collider>();
         target.enabled = false;
+        name = highlightName;
     }
 	// Update is called once per frame
 	void Update () {

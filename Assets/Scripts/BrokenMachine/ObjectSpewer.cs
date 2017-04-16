@@ -6,30 +6,42 @@ public class ObjectSpewer : MonoBehaviour {
     [SerializeField]
     GameObject toSpew;
     [SerializeField]
+    Transform[] spawnAreas;
+    [SerializeField]
     float forceStrength;
     [SerializeField]
     float spawnRange;
     [SerializeField]
     private Vector2 spewAmmountRange;
 
+    public bool go = false;
     private int randTransform;
     private GameObject tempSpew;
     private Rigidbody tempSpewRB;
 
 
+    void Start()
+    {
+        spawnAreas = GetComponentsInChildren<Transform>();
+    }
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (/*Input.GetKeyDown(KeyCode.Space)*/go)
         {
-            int rand = Mathf.RoundToInt(Random.Range(spewAmmountRange.x, spewAmmountRange.y));
-
-            for (int i = 0; i < rand; i++)
+            for (int j = 0; j < spawnAreas.Length; j++)
             {
+                int rand = Mathf.RoundToInt(Random.Range(spewAmmountRange.x, spewAmmountRange.y));
 
-                tempSpew = Instantiate(toSpew, transform.position + (Random.insideUnitSphere * spawnRange), Quaternion.LookRotation(Vector3.forward)) as GameObject;
-                tempSpewRB = tempSpew.GetComponent<Rigidbody>();
-                tempSpewRB.velocity = (Vector3.forward * forceStrength);
+                for (int i = 0; i < rand; i++)
+                {
+
+                    tempSpew = Instantiate(toSpew, spawnAreas[j].position + (Random.insideUnitSphere * spawnRange), Quaternion.LookRotation(Vector3.forward)) as GameObject;
+                    tempSpewRB = tempSpew.GetComponent<Rigidbody>();
+                    tempSpewRB.velocity = (Vector3.forward * forceStrength);
+                }
             }
+            go = false;
         }
     }
 
