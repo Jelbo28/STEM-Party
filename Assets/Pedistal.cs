@@ -4,26 +4,44 @@ using UnityEngine;
 
 public class Pedistal : MonoBehaviour
 {
-
     [SerializeField] private float stopPoint;
     private Animator anim;
-	// Use this for initialization
-	void Start ()
-	{
+    private AudioSource audio;
+    [SerializeField] private AudioClip clip;
+    [SerializeField] private float pitch;
+    private bool stop = true;
+
+    void Start ()
+    {
 	    anim = GetComponent<Animator>();
-	}
+	    audio = GetComponentInChildren<AudioSource>();
+        //clips[0] = audio.clip;
+        //pitch = audio.pitch * stopPoint;
+    }
 	
-	// Update is called once per frame
 	void Update ()
 	{
 	    if (stopPoint <= 0)
 	    {
-	        anim.speed = 0;
-	    }
-	    else
+            Stop();
+        }
+        else
 	    {
             stopPoint -= Time.deltaTime;
-
         }
+    }
+
+    void Stop()
+    {
+        if (stop)
+        {
+            anim.speed = 0;
+            //audio.pitch = pitch;
+            audio.Stop();
+            audio.PlayOneShot(clip, pitch);
+            //Debug.Log("Audio!");
+            stop = false;
+        }
+
     }
 }
