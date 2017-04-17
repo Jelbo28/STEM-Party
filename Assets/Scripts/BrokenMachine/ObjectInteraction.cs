@@ -10,13 +10,26 @@ public class ObjectInteraction : MonoBehaviour
     [SerializeField] private Color crosshairNormal;
     [SerializeField] private Color crosshairHighlight;
     [SerializeField] private Text fixCount;
+    [SerializeField]
+    private Text ptsCount;
+
 
     private int parts;
     private bool indexUp;
 
+    [SerializeField]
+    private int playerNum;
+    private PlayerInfo[] players;
+    private PlayerInfo thisPlayer;
+    private MinigameController manager;
+
     private void Update()
     {
-        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        players = FindObjectsOfType<PlayerInfo>();
+        thisPlayer = players[playerNum + 2];
+        manager = FindObjectOfType<MinigameController>();
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, viewDistance))
@@ -33,18 +46,36 @@ public class ObjectInteraction : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                hit.transform.GetComponent<BrokenPart>().health -= damage;
-
-                if (hit.transform.GetComponent<BrokenPart>().health <= 0 &&
-                    hit.transform.GetComponent<BrokenPart>().broken)
+                if (hit.transform.GetComponent<BrokenPart>())
                 {
-                    hit.transform.parent.GetComponent<MachineController>()
-                        .ChangePart(hit.transform.GetComponent<BrokenPart>(), true);
-                    hit.transform.GetComponent<BrokenPart>().health =
-                        hit.transform.GetComponent<BrokenPart>().origHealth;
-                    hit.transform.GetComponent<BrokenPart>().broken = false;
-                    parts++;
-                    fixCount.text = parts + "/" + 4;
+                    BrokenPart brokenPart = hit.transform.GetComponent<BrokenPart>();
+                    brokenPart.health -= damage;
+
+                    if (brokenPart.health <= 0 &&
+                        brokenPart.broken)
+                    {
+                        hit.transform.parent.GetComponent<MachineController>().ChangePart(brokenPart, true);
+                        brokenPart.health =
+                            brokenPart.origHealth;
+                        brokenPart.broken = false;
+                        parts++;
+                        fixCount.text = parts + "/" + 4;
+                        if (parts >= 4)
+                        {
+                            thisPlayer.SetWinner();
+                            manager.EndGame(thisPlayer);
+
+                        }
+                    }
+                }
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                if (hit.transform.name == "Data Point")
+                {
+                    thisPlayer.mingamePts++;
+                    ptsCount.text = "Data Pts: " + thisPlayer.mingamePts;
+                    hit.transform.gameObject.SetActive(false);
                 }
             }
         }

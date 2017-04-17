@@ -3,21 +3,24 @@ using UnityEngine;
 
 public class MachineController : MonoBehaviour
 {
-    [SerializeField] private int playerNum;
     [SerializeField] private List<BrokenPart> parts;
     [SerializeField] private bool reset;
     [SerializeField] private readonly bool AIControl = false;
     [SerializeField] private Vector2 AITimerRange;
     [SerializeField] private float AITimer;
     private MinigameController manager;
+    [SerializeField]
+    private int playerNum;
+    [SerializeField]
     private PlayerInfo[] players;
     private PlayerInfo thisPlayer;
 
     private void Start()
     {
-        players = FindObjectsOfType<PlayerInfo>();
-        thisPlayer = players[playerNum - 1];
         manager = FindObjectOfType<MinigameController>();
+        players = GameObject.FindWithTag("PlayerInfo").transform.GetComponentsInChildren<PlayerInfo>();
+        thisPlayer = players[playerNum - 1];
+        Debug.Log(name + " = " + thisPlayer);
         for (var i = 0; i < transform.childCount; i++)
         {
             if (transform.GetChild(i).GetComponent<BrokenPart>() == true)
@@ -116,6 +119,10 @@ public class MachineController : MonoBehaviour
         {
             part.transform.GetChild(0).GetComponent<ObjectSpewer>().go = true;
         }
+        if (parts.Count <= 0)
+        {
+            manager.EndGame(thisPlayer);
+        }
     }
 
 
@@ -136,7 +143,7 @@ public class MachineController : MonoBehaviour
 
     private void ToggleChild(BrokenPart target)
     {
-        for (var i = 0; i < target.transform.childCount; i++)
+        for (int i = 0; i < target.transform.childCount; i++)
         {
             target.transform.GetChild(i)
                 .gameObject.SetActive(!target.transform.GetChild(i).gameObject.activeInHierarchy);
