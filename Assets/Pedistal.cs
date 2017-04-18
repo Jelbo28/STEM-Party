@@ -5,6 +5,9 @@ using UnityEngine;
 public class Pedistal : MonoBehaviour
 {
     [SerializeField] private float stopPoint;
+    [SerializeField] private string place;
+    [SerializeField]
+    private int playerState;
     private Animator anim;
     private AudioSource audio;
     [SerializeField] private AudioClip clip;
@@ -42,6 +45,33 @@ public class Pedistal : MonoBehaviour
             //Debug.Log("Audio!");
             stop = false;
         }
+
+    }
+
+    void SetPedistal(int level)
+    {
+        switch (level)
+        {
+            case 1:
+                place = "1st";
+                stopPoint = 1.5f;
+                break;
+            case 2:
+                place = "2nd";
+                stopPoint = 1;
+                break;
+            case 3:
+                place = "3rd";
+                stopPoint = 0;
+                break;
+            case 4:
+                place = "4th";
+                stopPoint = 0;
+                break;
+
+
+        }
+        GetComponentInChildren<TextMesh>().text = place;
 
     }
 }
