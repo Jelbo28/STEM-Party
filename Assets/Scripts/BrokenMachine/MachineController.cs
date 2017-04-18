@@ -5,23 +5,25 @@ public class MachineController : MonoBehaviour
 {
     [SerializeField] private List<BrokenPart> parts;
     [SerializeField] private bool reset;
-    [SerializeField] private readonly bool AIControl = false;
+    [SerializeField] private bool AIControl = false;
     [SerializeField] private Vector2 AITimerRange;
     [SerializeField] private float AITimer;
     private MinigameController manager;
     [SerializeField]
     private int playerNum;
-    [SerializeField]
-    private PlayerInfo[] players;
-    private PlayerInfo thisPlayer;
+    [HideInInspector]
+    public PlayerInfo thisPlayer;
 
-    private void Start()
+    private void Awake()
     {
         manager = FindObjectOfType<MinigameController>();
-        players = GameObject.FindWithTag("PlayerInfo").transform.GetComponentsInChildren<PlayerInfo>();
-        thisPlayer = players[playerNum - 1];
-        Debug.Log(name + " = " + thisPlayer);
-        for (var i = 0; i < transform.childCount; i++)
+        //Debug.Log(name + " ," + (playerNum - 1))     ;
+        thisPlayer =
+            GameObject.FindObjectOfType<ScoreManager>().players[playerNum-1];
+        //Debug.Log(name + " = " +thisPlayer);
+        //thisPlayer = players[playerNum - 1];
+        //Debug.Log(name + " = " + thisPlayer);
+        for (int i = 0; i < transform.childCount; i++)
         {
             if (transform.GetChild(i).GetComponent<BrokenPart>() == true)
                 parts.Add(transform.GetChild(i).GetComponent<BrokenPart>());
@@ -31,9 +33,12 @@ public class MachineController : MonoBehaviour
 
     private void Update()
     {
+        thisPlayer =
+    GameObject.FindObjectOfType<ScoreManager>().players[playerNum - 1];
+        //Debug.Log(name + " = " + thisPlayer);
         if (reset)
         {
-            for (var i = 0; i < parts.Count; i++)
+            for (int i = 0; i < parts.Count; i++)
             {
                 ChangePart(parts[i], false);
             }
@@ -48,7 +53,7 @@ public class MachineController : MonoBehaviour
         AITimer -= Time.deltaTime;
         if (AIControl && AITimer <= 0)
         {
-            var partNum = Mathf.RoundToInt(Random.Range(0, parts.Count));
+            int partNum = Mathf.RoundToInt(Random.Range(0, parts.Count));
             parts.Remove(parts[partNum]);
             if (parts.Count <= 0)
             {

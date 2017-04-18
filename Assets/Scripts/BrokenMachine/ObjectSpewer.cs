@@ -31,6 +31,7 @@ public class ObjectSpewer : MonoBehaviour
                 {
                     tempSpew = Instantiate(toSpew, spawnAreas[j].position + (Random.insideUnitSphere*spawnRange),
                         Quaternion.LookRotation(Vector3.forward));
+                    tempSpew.transform.SetParent(GameObject.Find("Data Points").transform);
                     tempSpewRB = tempSpew.GetComponent<Rigidbody>();
                     tempSpewRB.velocity = (Vector3.forward*forceStrength);
                 }

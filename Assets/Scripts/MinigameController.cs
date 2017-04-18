@@ -81,7 +81,7 @@ public class MinigameController : MonoBehaviour
 
     public void EndGame(PlayerInfo winner)
     {
-        Debug.Log(winner.name);
+        Debug.Log(winner.characterName);
         GameText[1].SetActive(true);
         endGame = true;
 

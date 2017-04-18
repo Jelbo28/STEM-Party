@@ -18,16 +18,18 @@ public class ObjectInteraction : MonoBehaviour
     private bool indexUp;
 
     [SerializeField]
-    private int playerNum;
-    private PlayerInfo[] players;
     private PlayerInfo thisPlayer;
     private MinigameController manager;
 
+    void Awake()
+    {
+        thisPlayer = GetComponentInParent<MachineController>().thisPlayer;
+        manager = FindObjectOfType<MinigameController>();
+    }
+
     private void Update()
     {
-        players = FindObjectsOfType<PlayerInfo>();
-        thisPlayer = players[playerNum + 2];
-        manager = FindObjectOfType<MinigameController>();
+
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;

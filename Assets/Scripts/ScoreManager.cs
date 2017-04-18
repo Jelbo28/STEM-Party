@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
+    [SerializeField]
+    public PlayerInfo[] players;
+    // Use this for initialization
+    void Start () {
         DontDestroyOnLoad(gameObject);
+        players = GetComponentsInChildren<PlayerInfo>();
+
 
     }
 
