@@ -79,7 +79,9 @@ public class Pedistal : MonoBehaviour
 
 
         }
-        characters[character].parent = transform.GetChild(0);
+        //characters[character].position = transform.GetChild(0).GetChild(0).position;
+
+        characters[character].parent = transform.GetChild(0).GetChild(0);
         pedistalText.text = place;
 
     }
