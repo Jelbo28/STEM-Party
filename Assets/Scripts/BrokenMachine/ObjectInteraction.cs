@@ -3,25 +3,20 @@ using UnityEngine.UI;
 
 public class ObjectInteraction : MonoBehaviour
 {
-    [SerializeField] private float damage;
-    [SerializeField] private float viewDistance;
-    [SerializeField] private GameObject indexCard;
     [SerializeField] private Image crosshair;
-    [SerializeField] private Color crosshairNormal;
     [SerializeField] private Color crosshairHighlight;
+    [SerializeField] private Color crosshairNormal;
+    [SerializeField] private float damage;
     [SerializeField] private Text fixCount;
-    [SerializeField]
-    private Text ptsCount;
-
-
-    private int parts;
+    [SerializeField] private GameObject indexCard;
     private bool indexUp;
-
-    [SerializeField]
-    private PlayerInfo thisPlayer;
     private MinigameController manager;
+    private int parts;
+    [SerializeField] private Text ptsCount;
+    [SerializeField] private PlayerInfo thisPlayer;
+    [SerializeField] private float viewDistance;
 
-    void Awake()
+    private void Awake()
     {
         thisPlayer = GetComponentInParent<MachineController>().thisPlayer;
         manager = FindObjectOfType<MinigameController>();
@@ -29,8 +24,6 @@ public class ObjectInteraction : MonoBehaviour
 
     private void Update()
     {
-
-
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
@@ -65,8 +58,7 @@ public class ObjectInteraction : MonoBehaviour
                         if (parts >= 4)
                         {
                             thisPlayer.SetWinner();
-                            manager.EndGame(thisPlayer);
-
+                            manager.SetWinner(thisPlayer);
                         }
                     }
                 }

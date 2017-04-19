@@ -55,8 +55,17 @@ public class CameraFollow : MonoBehaviour
     private bool isRotating;   
     private bool isZooming;
 
+    void Start()
+    {
+        Cursor.visible = false;
+    }
+
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.visible = !Cursor.visible;
+        }
         Vector3 relativePos = target.position - transform.position;
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         Quaternion current = transform.localRotation;

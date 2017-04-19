@@ -16,8 +16,10 @@ public class MinigameController : MonoBehaviour
     [SerializeField] private MonoBehaviour[] thangs;
     private bool endGame = false;
     // Use this for initialization
+    private SceneChanger sceneChanger;
     private void Start()
     {
+        sceneChanger = FindObjectOfType<SceneChanger>();
         Fade.GetComponent<Animator>().SetTrigger("FadeIn");
 
         Cursor.visible = false;
@@ -47,27 +49,8 @@ public class MinigameController : MonoBehaviour
         {
             BeginGame();
         }
-        if (endGame)
-        {
-            endDelay -= Time.deltaTime;
-            if (endDelay <= 3)
-            {
-                GameText[1].GetComponent<Text>().text = "Ending in... " + Mathf.RoundToInt(endDelay);
-                if (endDelay <= 1.5f)
-                {
-                    Fade.GetComponent<Animator>().SetTrigger("FadeOut");
-                    if (endDelay <= 1)
-                    {
-                        Time.timeScale -= Time.deltaTime;
-                        if (endDelay <= 0.5f)
-                        {
-                            Time.timeScale = 0;
-                        }
-                    }
-                }
-
-            }
-        }
+        if (!endGame) return;
+        EndGame();
     }
 
     private void BeginGame()
@@ -79,11 +62,31 @@ public class MinigameController : MonoBehaviour
         GameText[0].SetActive(true);
     }
 
-    public void EndGame(PlayerInfo winner)
+    private void EndGame()
     {
-        Debug.Log(winner.characterName);
-        GameText[1].SetActive(true);
-        endGame = true;
+        endDelay -= Time.deltaTime;
+        if (!(endDelay <= 3)) return;
+        GameText[1].GetComponent<Text>().text = "Ending in... " + Mathf.RoundToInt(endDelay);
+        if (!(endDelay <= 1.5f)) return;
+        Fade.GetComponent<Animator>().SetTrigger("FadeOut");
+        if (!(endDelay <= 1)) return;
+        Time.timeScale -= Time.deltaTime;
+        if (endDelay <= 0.5f)
+        {
+           // Time.timeScale = 0;
+            sceneChanger.LoadSceneByName("Minigame Results");
+        }
+    }
+
+    public void SetWinner(PlayerInfo winner)
+    {
+        if (!endGame)
+        {
+            Debug.Log(winner.characterName);
+            GameText[1].SetActive(true);
+            endGame = true;
+        }
+
 
     }
 }

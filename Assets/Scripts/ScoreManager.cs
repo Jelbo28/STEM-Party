@@ -7,7 +7,6 @@ public class ScoreManager : MonoBehaviour {
     public PlayerInfo[] players;
     // Use this for initialization
     void Start () {
-        DontDestroyOnLoad(gameObject);
         players = GetComponentsInChildren<PlayerInfo>();
 
 
