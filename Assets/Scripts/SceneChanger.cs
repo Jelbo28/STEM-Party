@@ -5,23 +5,24 @@ using UnityEngine;
 
 public class SceneChanger : MonoBehaviour {
 
-    [SerializeField]
-    string[] allScenes;
 
     void Start() {
         DontDestroyOnLoad(gameObject);
     }
+    void Update()
+    {
 
+ 
+    }
 
     public void LoadSceneByName(string sceneName)
     {
 
-        for (int i = 0; i < allScenes.Length; i++)
-        {
-            if (allScenes[i] == sceneName)
-            {
-                SceneManager.LoadScene(i);
-            }
-        }
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void LoadSceneByIndex(int sceneNumber)
+    {
+        SceneManager.LoadScene(sceneNumber);
     }
 }

@@ -9,16 +9,20 @@ public class PlayerInfo : MonoBehaviour {
     [SerializeField]
     public string extension;
     [SerializeField]
-    bool AI;
+    public bool AI;
+    [SerializeField]
+    public bool thisUser;
+    [SerializeField]
+    public int mingameWins;
     [SerializeField]
     public int mingamePts;
     [SerializeField]
     public int totalPts;
 
-    [SerializeField] public bool winner = false;
+    [SerializeField] public int place = 0;
 
-    public void SetWinner()
+    public void SetPlace(int placeTo)
     {
-        winner = true;
+        place = placeTo;
     }
 }

@@ -12,6 +12,8 @@ public class MachineController : MonoBehaviour
     [SerializeField] private bool reset;
     [HideInInspector] public PlayerInfo thisPlayer;
     //private int partNum = 0;
+
+    public bool gameOver = false;
     private void Awake()
     {
         manager = FindObjectOfType<MinigameController>();
@@ -21,7 +23,7 @@ public class MachineController : MonoBehaviour
         //Debug.Log(name + " = " +thisPlayer);
         //thisPlayer = players[playerNum - 1];
         //Debug.Log(name + " = " + thisPlayer);
-        for (var i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
             if (transform.GetChild(i).GetComponent<BrokenPart>() == true)
                 parts.Add(transform.GetChild(i).GetComponent<BrokenPart>());
@@ -48,23 +50,36 @@ public class MachineController : MonoBehaviour
     private void AI()
     {
         //List<int> parts = new List<int>();
-        AITimer -= Time.deltaTime;
-        if (!AIControl || !(AITimer <= 0)) return;
-        var partNum = Mathf.RoundToInt(Random.Range(0, parts.Count));
-        if (parts.Count >= 1)
+        if (!AIControl) return;
+        if (!gameOver)
         {
-            parts.Remove(parts[partNum]);
-            ChangePart(parts[partNum], true);
-            parts[partNum].broken = false;
-            parts[partNum].health = parts[partNum].origHealth;
-            AITimer = Random.Range(AITimerRange.x, AITimerRange.y);
+            AITimer -= Time.deltaTime;
+            if (AITimer >= 0) return;
+            int partNum = Mathf.RoundToInt(Random.Range(0, parts.Count));
+            if (parts.Count >= 1)
+            {
+                parts.Remove(parts[partNum]);
+                ChangePart(parts[partNum], true);
+                parts[partNum].broken = false;
+                parts[partNum].health = parts[partNum].origHealth;
+
+                thisPlayer.mingamePts += Mathf.RoundToInt(Random.Range(3, 5));
+
+                AITimer = Random.Range(AITimerRange.x, AITimerRange.y);
+            }
+            else
+            {
+                //Debug.Log(name + " = " + parts.Count);
+                thisPlayer.mingameWins += 10;
+                thisPlayer.SetPlace(1);
+                manager.EndGame();
+            }
         }
-        //partNum++;
         else
         {
-            Debug.Log(name + " = " + parts.Count);
-            manager.SetWinner(thisPlayer);
+            thisPlayer.SetPlace(parts.Count);
             AIControl = false;
+
         }
     }
 
@@ -104,7 +119,7 @@ public class MachineController : MonoBehaviour
         }
         if (parts.Count <= 0)
         {
-            manager.SetWinner(thisPlayer);
+            manager.EndGame();
         }
     }
 

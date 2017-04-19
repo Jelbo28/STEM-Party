@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class MinigameController : MonoBehaviour
 {
@@ -50,7 +51,7 @@ public class MinigameController : MonoBehaviour
             BeginGame();
         }
         if (!endGame) return;
-        EndGame();
+        EndGameScreen();
     }
 
     private void BeginGame()
@@ -62,8 +63,28 @@ public class MinigameController : MonoBehaviour
         GameText[0].SetActive(true);
     }
 
-    private void EndGame()
+    public void EndGame()
     {
+        for (int i = 0; i < 4; i++)
+        {
+            if (i != 3)
+            {
+                stuffToDisable[i].GetComponent<MachineController>().gameOver = true;
+
+            }
+            else
+            {
+                stuffToDisable[i].GetComponent<ObjectInteraction>().gameOver = true;
+
+
+            }
+        }
+        endGame = true;
+    }
+
+    void EndGameScreen()
+    {
+        GameText[1].SetActive(true);
         endDelay -= Time.deltaTime;
         if (!(endDelay <= 3)) return;
         GameText[1].GetComponent<Text>().text = "Ending in... " + Mathf.RoundToInt(endDelay);
@@ -73,20 +94,9 @@ public class MinigameController : MonoBehaviour
         Time.timeScale -= Time.deltaTime;
         if (endDelay <= 0.5f)
         {
-           // Time.timeScale = 0;
+            // Time.timeScale = 0;
+            Cursor.visible = true;
             sceneChanger.LoadSceneByName("Minigame Results");
         }
-    }
-
-    public void SetWinner(PlayerInfo winner)
-    {
-        if (!endGame)
-        {
-            Debug.Log(winner.characterName);
-            GameText[1].SetActive(true);
-            endGame = true;
-        }
-
-
     }
 }

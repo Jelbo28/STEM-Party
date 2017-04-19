@@ -6,7 +6,7 @@ public class Pedistal : MonoBehaviour
 {
     [SerializeField] private Transform[] characters;
     [SerializeField] private float stopPoint;
-    [SerializeField] private string place;
+    [SerializeField] public string place;
     [SerializeField]
     private int playerState;
     private Animator anim;
@@ -56,7 +56,7 @@ public class Pedistal : MonoBehaviour
         GetComponent<AudioSource>().Play();
     }
 
-    public void SetPedistal(int level, int character)
+    public void SetPedistal(int level, string character)
     {
         switch (level)
         {

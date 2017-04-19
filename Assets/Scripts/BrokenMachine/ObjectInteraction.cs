@@ -15,6 +15,7 @@ public class ObjectInteraction : MonoBehaviour
     [SerializeField] private Text ptsCount;
     [SerializeField] private PlayerInfo thisPlayer;
     [SerializeField] private float viewDistance;
+    public bool gameOver = false;
 
     private void Awake()
     {
@@ -37,34 +38,34 @@ public class ObjectInteraction : MonoBehaviour
                 indexUp = true;
                 indexCard.GetComponentInChildren<Text>().text = hit.transform.name;
                 crosshair.color = crosshairHighlight;
-            }
 
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (hit.transform.GetComponent<BrokenPart>())
+
+                if (Input.GetMouseButtonDown(0))
                 {
-                    BrokenPart brokenPart = hit.transform.GetComponent<BrokenPart>();
-                    brokenPart.health -= damage;
-
-                    if (brokenPart.health <= 0 &&
-                        brokenPart.broken)
+                    if (hit.transform.GetComponent<BrokenPart>())
                     {
-                        hit.transform.parent.GetComponent<MachineController>().ChangePart(brokenPart, true);
-                        brokenPart.health =
-                            brokenPart.origHealth;
-                        brokenPart.broken = false;
-                        parts++;
-                        fixCount.text = parts + "/" + 4;
-                        if (parts >= 4)
+                        BrokenPart brokenPart = hit.transform.GetComponent<BrokenPart>();
+                        brokenPart.health -= damage;
+
+                        if (brokenPart.health <= 0 &&
+                            brokenPart.broken)
                         {
-                            thisPlayer.SetWinner();
-                            manager.SetWinner(thisPlayer);
+                            hit.transform.parent.GetComponent<MachineController>().ChangePart(brokenPart, true);
+                            brokenPart.health =
+                                brokenPart.origHealth;
+                            brokenPart.broken = false;
+                            parts++;
+                            fixCount.text = parts + "/" + 4;
+                            if (parts == 4)
+                            {
+                                thisPlayer.SetPlace(1);
+                                thisPlayer.mingameWins += 10;
+                                manager.EndGame();
+                            }
                         }
                     }
                 }
-            }
-            if (Input.GetMouseButtonDown(1))
-            {
+                if (!Input.GetMouseButtonDown(1)) return;
                 if (hit.transform.name == "Data Point")
                 {
                     thisPlayer.mingamePts++;
@@ -72,6 +73,7 @@ public class ObjectInteraction : MonoBehaviour
                     hit.transform.gameObject.SetActive(false);
                 }
             }
+
         }
         else
         {
