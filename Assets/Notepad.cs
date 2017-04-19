@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class Notepad : MonoBehaviour {
     [SerializeField]
-    string posBonusMessages;
+    string[] posBonusMessages;
     [SerializeField]
-    string negBonusMessages;
+    string[] negBonusMessages;
     [SerializeField]
     float negChance;
     [SerializeField]
@@ -20,19 +20,20 @@ public class Notepad : MonoBehaviour {
     TextMesh TScoreText;
     private int bonusScore;
     private int totalScore;
+    [SerializeField]
     private PlayerInfo[] players;
     private Pedistal[] pedistals;
     // Use this for initialization
     void Start () {
         players = FindObjectOfType<ScoreManager>().players;
-        pedistals = GameObject.Find("Pedistals").GetComponentsInChildren<Pedistal>();
+        pedistals = transform.GetChild(1).GetComponentsInChildren<Pedistal>();
         for (int i = 0; i < players.Length; i++)
         {
-            pedistals[i].SetPedistal(players[i].place, players[i].characterName);
+            pedistals[i].SetPedistal(players[i].place);
             if (players[i].thisUser)
             {
                 CScoreText.text = "Competition = " + (players[i].mingameWins > 0 ? "+" : "-") + players[i].mingameWins;
-                DScoreText.text = "Data Pts. Found = " + (players[i].mingameWins > 0 ? "+" : "-") + players[i].mingameWins;
+                DScoreText.text = "Data Pts. Found = " + (players[i].mingamePts > 0 ? "+" : "-") + players[i].mingamePts;
                 int rand = Random.Range(0, 101);
                 bonusScore = Random.Range(0, 21);
                 if (rand <= negChance)

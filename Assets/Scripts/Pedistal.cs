@@ -7,8 +7,6 @@ public class Pedistal : MonoBehaviour
     [SerializeField] private Transform[] characters;
     [SerializeField] private float stopPoint;
     [SerializeField] public string place;
-    [SerializeField]
-    private int playerState;
     private Animator anim;
     private AudioSource audio;
     [SerializeField] private AudioClip clip;
@@ -16,8 +14,14 @@ public class Pedistal : MonoBehaviour
     private bool stop = true;
     [SerializeField] private TextMesh pedistalText;
 
+    //private Transform playerAnchor;
+    [SerializeField] private Animator charAnim;
+
     void Start ()
     {
+        //characters = GameObject.Find("Characters").GetComponentsInChildren<Transform>();
+        //playerAnchor = transform.GetChild(0);
+        //charAnim = transform.GetChild(0).GetChild(0).GetComponent<Animator>();
 	    anim = GetComponent<Animator>();
 	    audio = GetComponentInChildren<AudioSource>();
 
@@ -56,32 +60,53 @@ public class Pedistal : MonoBehaviour
         GetComponent<AudioSource>().Play();
     }
 
-    public void SetPedistal(int level, string character)
+    public void SetPedistal(int level)
     {
         switch (level)
         {
             case 1:
                 place = "1st";
                 stopPoint = 3f;
+                charAnim.SetInteger("State", 1);
                 break;
             case 2:
                 place = "2nd";
                 stopPoint = 2.5f;
+                charAnim.SetInteger("State", 2);
                 break;
             case 3:
                 place = "3rd";
                 stopPoint = 2f;
+                charAnim.SetInteger("State", 2);
                 break;
             case 4:
                 place = "4th";
                 stopPoint = 1.5f;
+                charAnim.SetInteger("State", 3);
                 break;
 
 
         }
-        //characters[character].position = transform.GetChild(0).GetChild(0).position;
+        //int pedistalNum = 0;
+        //switch (characterName)
+        //{
+        //    case "Red":
+        //        pedistalNum = 0;
+        //        break;
+        //    case "Blue":
+        //        pedistalNum = 1;
+        //        break;
+        //    case "Green":
+        //        pedistalNum = 2;
+        //        break;
+        //    case "Yellow":
+        //        pedistalNum = 3;
+        //        break;
 
-        characters[character].parent = transform.GetChild(0).GetChild(0);
+        //}
+        //characters[pedistalNum].position = playerAnchor.position;
+
+        //characters[pedistalNum].parent = playerAnchor;
         pedistalText.text = place;
 
     }
