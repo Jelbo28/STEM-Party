@@ -16,12 +16,17 @@ public class PauseManager : MonoBehaviour {
     AudioMixerSnapshot unpaused;
 
     private Canvas canvas;
+    [SerializeField] private bool cursorOnStart = false;
+    [SerializeField]
+    private bool cursorToggle = false;
 
-
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         DontDestroyOnLoad(gameObject);
-        Cursor.visible = false;
+	    if (!cursorOnStart)
+	    {
+            Cursor.visible = false;
+        }
 
         canvas = GetComponent<Canvas>();
 	}
@@ -37,8 +42,12 @@ public class PauseManager : MonoBehaviour {
     void Pause()
     {
         canvas.enabled = !canvas.enabled;
-        Cursor.visible = Cursor.visible != true;
-        Cursor.lockState = Cursor.visible ? CursorLockMode.None : CursorLockMode.Locked;
+        if (cursorToggle)
+        {
+            Cursor.visible = Cursor.visible != true;
+            Cursor.lockState = Cursor.visible ? CursorLockMode.None : CursorLockMode.Locked;
+        }
+
         Time.timeScale = Time.timeScale == 0 ? 1 : 0;
         Lowpass();
     }
