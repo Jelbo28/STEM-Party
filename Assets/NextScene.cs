@@ -21,15 +21,20 @@ public class NextScene : MonoBehaviour {
 	void Update () {
         if (Input.GetKeyDown(inputKey))
         {
-            if (!instaQuit)
-            {
-                sceneChanger.LoadSceneByName(sceneTo);
+            ChangeScene();
+        }
+    }
 
-            }
-            else
-            {
-                Application.Quit();
-            }
+    public void ChangeScene()
+    {
+        if (!instaQuit)
+        {
+            sceneChanger.LoadSceneByName(sceneTo);
+
+        }
+        else
+        {
+            Application.Quit();
         }
     }
 }
