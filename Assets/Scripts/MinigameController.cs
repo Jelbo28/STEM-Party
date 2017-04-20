@@ -23,7 +23,6 @@ public class MinigameController : MonoBehaviour
         sceneChanger = FindObjectOfType<SceneChanger>();
         Fade.GetComponent<Animator>().SetTrigger("FadeIn");
 
-        Cursor.visible = false;
               foreach (GameObject stuff in stuffToDisable)
         {
             //stuff.GetComponents(typeof(MonoBehaviour));

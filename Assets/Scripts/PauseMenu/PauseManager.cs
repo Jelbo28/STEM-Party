@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using UnityStandardAssets.Characters.FirstPerson;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +20,9 @@ public class PauseManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        DontDestroyOnLoad(gameObject);
+        Cursor.visible = false;
+
         canvas = GetComponent<Canvas>();
 	}
 	
@@ -26,13 +30,15 @@ public class PauseManager : MonoBehaviour {
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.Escape))
         {
-            canvas.enabled = !canvas.enabled;
             Pause();
         }
 	}
 
     void Pause()
     {
+        canvas.enabled = !canvas.enabled;
+        Cursor.visible = Cursor.visible != true;
+        Cursor.lockState = Cursor.visible ? CursorLockMode.None : CursorLockMode.Locked;
         Time.timeScale = Time.timeScale == 0 ? 1 : 0;
         Lowpass();
     }

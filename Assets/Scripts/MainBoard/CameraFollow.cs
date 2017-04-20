@@ -48,25 +48,22 @@ public class CameraFollow : MonoBehaviour
     float shiftBoost = 0.0f;
     [SerializeField]
     Vector2 zoomRange;
+
+    [SerializeField] private bool auto;
+    [SerializeField] private Vector2 autoPanSpeed;
      
 
-    private Vector3 mouseOrigin;   
-    private bool isPanning;     
+    private Vector3 mouseOrigin;
+    [SerializeField]
+    private bool isPanning;
+    [SerializeField]
     private bool isRotating;   
-    private bool isZooming;
+    [SerializeField] private bool isZooming;
 
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = false;
-    }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.visible = !Cursor.visible;
-        }
+
         Vector3 relativePos = target.position - transform.position;
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         Quaternion current = transform.localRotation;
@@ -80,47 +77,67 @@ public class CameraFollow : MonoBehaviour
         //    mouseOrigin = Input.mousePosition;
         //    isRotating = true;
         //}
-        if (Input.GetMouseButtonDown(0))
+
+        if (!auto)
         {
-            mouseOrigin = Input.mousePosition;
-            isZooming = true;
+            if (Input.GetMouseButtonDown(0))
+            {
+                mouseOrigin = Input.mousePosition;
+                isZooming = true;
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                mouseOrigin = Input.mousePosition;
+                //Debug.Log(Input.mousePosition.x);
+                isPanning = true;
+            }
+
+
+
+            //if (!Input.GetMouseButton(0)) isRotating = false;
+            if (!Input.GetMouseButton(0)) isZooming = false;
+            if (!Input.GetMouseButton(1)) isPanning = false;
+
+            if (isRotating)
+            {
+                Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
+
+                //transform.RotateAround(transform.position, transform.right, -pos.y * ((turnSpeed + shiftBoost) + shiftBoost));
+                transform.RotateAround(transform.position, Vector3.up, pos.x*(turnSpeed + shiftBoost));
+            }
+
+            if (isPanning)
+            {
+                Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
+                //Vector3 move = new Vector3 (0, autoPanSpeed,0)  ;
+
+                Vector3 move = new Vector3(pos.x*(panSpeed + shiftBoost), pos.y*(panSpeed + shiftBoost), 0);
+
+
+                Debug.Log(move.x);
+                transform.Translate(move, Space.Self);
+            }
+
+            if (isZooming)
+            {
+                Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
+
+                Vector3 move = pos.y*(zoomSpeed + shiftBoost)*transform.forward;
+                transform.Translate(move, Space.World);
+            }
+            ZoomRange();
         }
-        if (Input.GetMouseButtonDown(1))
+        else
         {
-            mouseOrigin = Input.mousePosition;
-            isPanning = true;
+            
+                if (isPanning)
+                {
+                    //Vector2 move = autoPanSpeed;
+
+                    transform.Translate(autoPanSpeed, Space.Self);
+                }
+            
         }
-
-
-
-        //if (!Input.GetMouseButton(0)) isRotating = false;
-        if (!Input.GetMouseButton(0)) isZooming = false;
-        if (!Input.GetMouseButton(1)) isPanning = false;
-
-        if (isRotating)
-        {
-            Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
-
-            //transform.RotateAround(transform.position, transform.right, -pos.y * ((turnSpeed + shiftBoost) + shiftBoost));
-            transform.RotateAround(transform.position, Vector3.up, pos.x * (turnSpeed + shiftBoost));
-        }
-
-        if (isPanning)
-        {
-            Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
-
-            Vector3 move = new Vector3(pos.x * (panSpeed + shiftBoost), pos.y * (panSpeed + shiftBoost), 0);
-            transform.Translate(move, Space.Self);
-        }
-
-        if (isZooming)
-        {
-            Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
-
-            Vector3 move = pos.y * (zoomSpeed + shiftBoost) * transform.forward;
-            transform.Translate(move, Space.World);
-        }
-        ZoomRange();
     }
 
     void ZoomRange()

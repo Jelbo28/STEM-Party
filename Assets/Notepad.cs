@@ -26,7 +26,7 @@ public class Notepad : MonoBehaviour {
     // Use this for initialization
     void Start () {
         players = FindObjectOfType<ScoreManager>().players;
-        pedistals = transform.GetChild(1).GetComponentsInChildren<Pedistal>();
+        pedistals = transform.GetChild(2).GetComponentsInChildren<Pedistal>();
         for (int i = 0; i < players.Length; i++)
         {
             pedistals[i].SetPedistal(players[i].place);
