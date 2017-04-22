@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class SceneChanger : MonoBehaviour {
+public class SceneChanger : MonoBehaviour
+{
 
-
+    private float delay;
+    private bool quit;
     void Start() {
         DontDestroyOnLoad(gameObject);
     }
@@ -19,17 +21,42 @@ public class SceneChanger : MonoBehaviour {
     public void LoadSceneByName(string sceneName)
     {
 
-        SceneManager.LoadScene(sceneName);
+            StartCoroutine(SceneDelay(sceneName));
+        
     }
 
     public void LoadSceneByIndex(int sceneNumber)
     {
-        SceneManager.LoadScene(sceneNumber);
+ 
+
+     
+            StartCoroutine(SceneDelay(sceneNumber.ToString()));
+      
     }
+
+    public void SetDelay(float delaySet)
+    {
+        delay = delaySet;
+    }
+
+    IEnumerator SceneDelay(string scene)
+    {
+        yield return new WaitForSeconds(delay);
+        if (!quit)
+        {
+            SceneManager.LoadScene(scene);
+
+        }
+        else
+        {
+            Application.Quit();
+
+        }
+    } 
+
 
     public void Quit()
     {
-        Application.Quit();
-
+        quit = true;
     }
 }
