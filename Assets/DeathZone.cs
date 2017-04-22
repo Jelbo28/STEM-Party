@@ -1,25 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class DeathZone : MonoBehaviour {
-    [SerializeField]
-    string[] killNames;
-
+public class DeathZone : MonoBehaviour
+{
+    [SerializeField] private string[] killNames;
     private Transform toKill;
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    void OnTriggerEnter(Collider other)
+    // Use this for initialization
+    private void Start()
     {
-        foreach (string target in killNames)
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        foreach (var target in killNames)
         {
             //Debug.Log(other.gameObject.name);
             if (other.gameObject.name == target)
@@ -34,21 +31,4 @@ public class DeathZone : MonoBehaviour {
             }
         }
     }
-
-    //void OnTriggerExit(Collider other)
-    //{
-    //    foreach (string target in killNames)
-    //    {
-    //        //Debug.Log(other.gameObject.name);
-    //        if (other.gameObject.name == target)
-    //        {
-    //toKill = other.transform;
-    //            toKill.GetChild(0).gameObject.SetActive(false);
-    //            toKill.parent.GetComponent<TopDown2DMovement>().walkSpeed += 2.5f;
-    //            toKill.parent.GetComponent<Rigidbody>().mass -= 50;
-    //            toKill.parent.GetComponent<Rigidbody>().drag = 0;
-    //            //toKill.parent.gameObject.SetActive(false);
-    //        }
-    //    }
-    //}
 }

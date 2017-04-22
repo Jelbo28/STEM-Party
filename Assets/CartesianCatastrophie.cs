@@ -1,47 +1,43 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine;
 
 public class CartesianCatastrophie : MonoBehaviour
 {
-    [SerializeField] private float instanceAmmount = 0;
-    [SerializeField]
-    private float timerLength = 5f;
-    [SerializeField]
-    private bool timerOn = false;
-    [SerializeField]
-    Text timerText;
-    [SerializeField]
-    private Vector2 coordinates;
-
-    [SerializeField]
-    private  float resetTimerLength ;
-    [SerializeField]
-    Text[] coordinatesText;
-    private float timer = 5f;
-    private float currInstanceAmmount = 0;
-    private Animator[] blocks;
-    [SerializeField]private float resetTimer;
+    [SerializeField] private float instanceAmmount = 3;
+    [SerializeField] private readonly float timerLength = 5f;
     private Animator anim;
-    [SerializeField]private bool reset = true;
-    [SerializeField]private TopDown2DMovement[] players;
+    private Animator[] blocks;
+    [SerializeField] public Vector2 coordinates;
+    [SerializeField] private Text[] coordinatesText;
+    private float currInstanceAmmount;
+    [SerializeField] private TopDown2DMovement[] players;
+    [SerializeField] private bool reset = true;
+    [SerializeField] private float resetTimer;
+    [SerializeField] private float resetTimerLength;
+    private float timer = 5f;
+    [SerializeField] private bool timerOn;
+    [SerializeField] private Text timerText;
+
+    private MinigameController minigameController;
     // Use this for initialization
-    void Awake ()
+    private void Awake()
     {
-        resetTimer = resetTimerLength;
+        // resetTimer = resetTimerLength;
+        minigameController = FindObjectOfType<MinigameController>();
         players = FindObjectsOfType<TopDown2DMovement>();
         blocks = GameObject.Find("Blocks").GetComponentsInChildren<Animator>();
         timer = timerLength;
-        currInstanceAmmount = 0;;
-        anim = GetComponent< Animator>();
+        currInstanceAmmount = 0;
+        ;
+        anim = GetComponent<Animator>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    private void Update()
+    {
         Timer();
         Reset();
-	}
+    }
 
     public void GenerateCoordinates()
     {
@@ -60,7 +56,6 @@ public class CartesianCatastrophie : MonoBehaviour
             }
             coordinatesText[0].text = coordinates.ToString("f0");
         }
-
     }
 
     public void SetCoordinates()
@@ -69,7 +64,7 @@ public class CartesianCatastrophie : MonoBehaviour
         timerOn = true;
     }
 
-    void Timer()
+    private void Timer()
     {
         if (timerOn)
         {
@@ -82,19 +77,22 @@ public class CartesianCatastrophie : MonoBehaviour
             {
                 if (coordinates.x > 0 && coordinates.y > 0)
                 {
-                                     blocks[1].SetTrigger("GoUnder");
+                    blocks[0].GetComponent<ObjectSpewer>().go = true;
+                    blocks[1].SetTrigger("GoUnder");
                     blocks[2].SetTrigger("GoUnder");
                     blocks[3].SetTrigger("GoUnder");
-
                 }
                 else if (coordinates.x < 0 && coordinates.y > 0)
                 {
+                    blocks[1].GetComponent<ObjectSpewer>().go = true;
                     blocks[0].SetTrigger("GoUnder");
                     blocks[2].SetTrigger("GoUnder");
                     blocks[3].SetTrigger("GoUnder");
                 }
                 else if (coordinates.x < 0 && coordinates.y < 0)
                 {
+                    blocks[2].GetComponent<ObjectSpewer>().go = true;
+
                     blocks[0].SetTrigger("GoUnder");
                     blocks[1].SetTrigger("GoUnder");
                     blocks[3].SetTrigger("GoUnder");
@@ -102,6 +100,8 @@ public class CartesianCatastrophie : MonoBehaviour
                 else if (coordinates.x > 0 && coordinates.y < 0)
 
                 {
+                    blocks[3].GetComponent<ObjectSpewer>().go = true;
+
                     blocks[0].SetTrigger("GoUnder");
                     blocks[1].SetTrigger("GoUnder");
                     blocks[2].SetTrigger("GoUnder");
@@ -130,15 +130,23 @@ public class CartesianCatastrophie : MonoBehaviour
         else
         {
             resetTimer = resetTimerLength;
-            foreach (TopDown2DMovement player in players)
+            players = FindObjectsOfType<TopDown2DMovement>();
+            if (players.Length > 0)
             {
-                if (!player.thisPlayer.AI) continue;
-                //Debug.Log("Yooooo");
-                player.waitAI = 1f;
-                player.go = true;
+                foreach (var player in players)
+                {
+                    if (!player.thisPlayer.AI) continue;
+                    //Debug.Log("Yooooo");
+                    player.waitAI = 1f;
+                    player.go = true;
+                }
+                GetComponent<Letter>().PlayAnimation();
             }
-            GetComponent<Letter>().PlayAnimation();
-            reset = false;
+            else
+            {
+                reset = false;
+                GameOver();
+            }
         }
     }
 }

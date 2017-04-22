@@ -1,10 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class CollectablePoint : MonoBehaviour {
+public class CollectablePoint : MonoBehaviour
+{
+    [SerializeField] private float destroyTime;
 
-    void OnTriggerEnter(Collider other)
+    private void Awake()
+    {
+        Destroy(gameObject, destroyTime);
+    }
+
+    private void OnTriggerEnter(Collider other)
     {
         if (other.tag != "Player") return;
         other.GetComponentInParent<TopDown2DMovement>().thisPlayer.mingamePts++;

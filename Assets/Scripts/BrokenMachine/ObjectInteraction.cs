@@ -10,7 +10,7 @@ public class ObjectInteraction : MonoBehaviour
     [SerializeField] private Text fixCount;
     [SerializeField] private GameObject indexCard;
     private bool indexUp;
-    private MinigameController manager;
+    private BrokenMachine manager;
     private int parts;
     [SerializeField] private Text ptsCount;
     [SerializeField] private PlayerInfo thisPlayer;
@@ -20,7 +20,7 @@ public class ObjectInteraction : MonoBehaviour
     private void Awake()
     {
         thisPlayer = GetComponentInParent<MachineController>().thisPlayer;
-        manager = FindObjectOfType<MinigameController>();
+        manager = FindObjectOfType<BrokenMachine>();
     }
 
     private void Update()

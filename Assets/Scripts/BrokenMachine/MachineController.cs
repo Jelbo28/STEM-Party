@@ -6,7 +6,7 @@ public class MachineController : MonoBehaviour
     [SerializeField] private bool AIControl;
     [SerializeField] private float AITimer;
     [SerializeField] private Vector2 AITimerRange;
-    private MinigameController manager;
+    private BrokenMachine manager;
     [SerializeField] private List<BrokenPart> parts;
     [SerializeField] private int playerNum;
     [SerializeField] private bool reset;
@@ -16,7 +16,7 @@ public class MachineController : MonoBehaviour
     public bool gameOver = false;
     private void Awake()
     {
-        manager = FindObjectOfType<MinigameController>();
+        manager = FindObjectOfType<BrokenMachine>();
         //Debug.Log(name + " ," + (playerNum - 1))     ;
         thisPlayer =
             FindObjectOfType<ScoreManager>().players[playerNum - 1];
@@ -140,7 +140,7 @@ public class MachineController : MonoBehaviour
 
     private static void ToggleChild(BrokenPart target)
     {
-        for (var i = 0; i < target.transform.childCount; i++)
+        for (int i = 0; i < target.transform.childCount; i++)
         {
             target.transform.GetChild(i)
                 .gameObject.SetActive(!target.transform.GetChild(i).gameObject.activeInHierarchy);

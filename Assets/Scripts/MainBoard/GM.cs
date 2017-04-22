@@ -26,6 +26,6 @@ public class GM : MonoBehaviour {
 
     void BeginGame()
     {
-        dispManager.GameStart();
+        dispManager.BeginGame();
     }
 }

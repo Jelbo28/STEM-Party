@@ -1,4 +1,5 @@
 using System;
+using Assets.Standard_Assets.Characters.FirstPersonCharacter.Scripts;
 using UnityEngine;
 using UnityStandardAssets.Utility;
 
