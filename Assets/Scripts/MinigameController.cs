@@ -10,6 +10,8 @@ public class MinigameController : MonoBehaviour
     [SerializeField] private GameObject[] GameText;
     [SerializeField] private GameObject Fade;
     [SerializeField] private List<MonoBehaviour> scripts;
+    [SerializeField]
+    private List<Animator> animators;
 
     [SerializeField] private float startDelay;
     [SerializeField]
@@ -33,6 +35,14 @@ public class MinigameController : MonoBehaviour
                         foreach (MonoBehaviour script in scripts)
             {
                 script.enabled = false;
+            }
+            foreach (Animator anim in stuff.GetComponents(typeof(Animator)))
+            {
+                animators.Add(anim);
+            }
+            foreach (Animator anim in animators)
+            {
+                anim.enabled = false;
             }
         }
 
@@ -58,6 +68,10 @@ public class MinigameController : MonoBehaviour
         foreach (MonoBehaviour script in scripts)
         {
             script.enabled = true;
+        }
+        foreach (Animator anim in animators)
+        {
+            anim.enabled = true;
         }
         GameText[0].SetActive(true);
     }
