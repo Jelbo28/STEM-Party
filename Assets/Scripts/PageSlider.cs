@@ -87,9 +87,14 @@ public class PageSlider : MonoBehaviour
             }
             else
             {
-          
-                    buttons[1].SetActive(!(pageNum >= 4));
-                buttons[0].SetActive(!(pageNum <= 0));
+
+                if (buttons.Length > 0)
+                {
+                    buttons[0].SetActive(pageNum > 0);
+                    buttons[1].SetActive(pageNum < 4);
+                    buttons[2].SetActive(pageNum == 0);
+                }
+
 
                 go = false;
             }
