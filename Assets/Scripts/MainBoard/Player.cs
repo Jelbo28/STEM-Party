@@ -29,7 +29,7 @@ public class Player : MonoBehaviour {
 	void Start () {
         tiles = GameObject.Find("Points").GetComponentsInChildren<Tile>();
         exhaust = GetComponentInChildren<ParticleSystem>();
-        anim = GetComponent<Animator>();
+        anim = transform.GetChild(0).GetComponent<Animator>();
         //tileOffset = Vector3.zero;
 	}
 	
