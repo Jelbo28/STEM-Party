@@ -16,12 +16,13 @@ public class DeathZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        foreach (var target in killNames)
+        foreach (string target in killNames)
         {
             //Debug.Log(other.gameObject.name);
             if (other.gameObject.name == target)
             {
                 toKill = other.transform;
+                toKill.parent.GetComponent<AudioSource>().Play();
                 Destroy(toKill.parent.gameObject, 3f);
                 toKill.GetChild(0).gameObject.SetActive(true);
                 toKill.parent.GetComponent<TopDown2DMovement>().walkSpeed -= 2.5f;

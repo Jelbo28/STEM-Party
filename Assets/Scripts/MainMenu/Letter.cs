@@ -16,7 +16,7 @@ public class Letter : MonoBehaviour {
 	    if (playOnStart)
 	    {
             anim.Play(animationName, -1, startingOffset);
-
+     
         }
     }
 	
@@ -24,5 +24,17 @@ public class Letter : MonoBehaviour {
 	public void PlayAnimation ( ) {
         anim.Play(animationName);
 
+    }
+
+    public void PlayAudio()
+    {
+        if (GetComponent<AudioSource>())
+        {
+            GetComponent<AudioSource>().Play();
+        }
+        else
+        {
+            Debug.Log("No AudioSouce component attached!");
+        }
     }
 }

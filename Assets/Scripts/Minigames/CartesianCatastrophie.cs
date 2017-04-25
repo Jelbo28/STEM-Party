@@ -17,6 +17,8 @@ public class CartesianCatastrophie : MonoBehaviour
     private float timer = 5f;
     [SerializeField] private bool timerOn;
     [SerializeField] private Text timerText;
+    [HideInInspector]
+    public PlayerInfo[] playerInfo;
 
     private MinigameController minigameController;
     // Use this for initialization
@@ -25,10 +27,10 @@ public class CartesianCatastrophie : MonoBehaviour
         // resetTimer = resetTimerLength;
         minigameController = FindObjectOfType<MinigameController>();
         players = FindObjectsOfType<TopDown2DMovement>();
+
         blocks = GameObject.Find("Blocks").GetComponentsInChildren<Animator>();
         timer = timerLength;
         currInstanceAmmount = 0;
-        ;
         anim = GetComponent<Animator>();
     }
 

@@ -25,7 +25,7 @@ public class TopDown2DMovement : MonoBehaviour
     //Minigame Specification Variables
     [SerializeField] private string minigameName;
     private CartesianCatastrophie minigameCC;
-
+    private AudioSource audio;
 
     private PlayerInfo[] players;
     private Rigidbody rBody;
@@ -53,7 +53,7 @@ public class TopDown2DMovement : MonoBehaviour
         }
 
             AI = thisPlayer.AI;
-        
+        audio = GetComponent<AudioSource>();
     }
 
     private void FixedUpdate()
@@ -161,5 +161,6 @@ public class TopDown2DMovement : MonoBehaviour
 
     public void Damage()
     {
+        audio.Play();
     }
 }
