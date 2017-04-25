@@ -10,8 +10,11 @@ public class PeriodicElement : MonoBehaviour
     private Animator anim;
     private ElementChase elementChase;
     private Rigidbody2D rb;
-    private Vector3 newDir;
+    private float newRot;
     [SerializeField] private Vector2 timerRange;
+    [SerializeField]
+    private float rotRange;
+
     [SerializeField]
     private Vector2 forceRange;
 
@@ -21,25 +24,32 @@ public class PeriodicElement : MonoBehaviour
 	    rb = GetComponent<Rigidbody2D>();
 	    elementChase = FindObjectOfType<ElementChase>();
 	    anim = GetComponent<Animator>();
-	    //timer = Random.Range(timerRange.x, timerRange.y);
-	}
+        newRot = Random.Range(-rotRange, rotRange);
+
+        //timer = Random.Range(timerRange.x, timerRange.y);
+    }
 
     void Update()
     {
         if (timer > 0)
         {
             timer -= Time.deltaTime;
-            if (timer < 2)
+            if (timer < 1)
             {
-                transform.Rotate(Vector3.forward * -90 * Time.deltaTime);
+                transform.Rotate(Vector3.forward * newRot * Time.deltaTime);
 
             }
         }
+        else if (Mathf.Abs(rb.velocity.x) + Mathf.Abs(rb.velocity.y) < .5f)
+        {
+            newRot = Random.Range(-rotRange, rotRange);
+            force = Random.Range(forceRange.x, forceRange.y);
+            rb.AddForce(transform.up*force*Time.deltaTime);
+            timer = Random.Range(timerRange.x, timerRange.y);
+        }
         else
         {
-            newDir = Random.insideUnitCircle*3;
-            rb.AddForce(transform.up*Random.Range(forceRange.x,forceRange.y)*Time.deltaTime);
-            timer = Random.Range(timerRange.x, timerRange.y);
+            rb.velocity *= Time.deltaTime;
         }
     }
 
