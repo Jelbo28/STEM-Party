@@ -16,11 +16,13 @@ public class ObjectInteraction : MonoBehaviour
     [SerializeField] private PlayerInfo thisPlayer;
     [SerializeField] private float viewDistance;
     public bool gameOver = false;
+    private Animator hammerAnim;
 
     private void Awake()
     {
         manager = FindObjectOfType<BrokenMachine>();
         thisPlayer = GetComponentInParent<MachineController>().currPlayer;
+        hammerAnim = transform.GetChild(0).GetComponent<Animator>();
     }
 
     private void Update()
@@ -46,6 +48,7 @@ public class ObjectInteraction : MonoBehaviour
                     {
                         BrokenPart brokenPart = hit.transform.GetComponent<BrokenPart>();
                         brokenPart.health -= damage;
+                        hammerAnim.SetTrigger("Ham");
 
                         if (brokenPart.health <= 0 &&
                             brokenPart.broken)
