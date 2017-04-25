@@ -12,6 +12,7 @@ public class ElementChase : MonoBehaviour
         public string name;
         public int count;
         public int prevCount;
+        public bool remaining = false;
         public GameObject uiDisp;
     }
     [SerializeField]
@@ -21,54 +22,63 @@ public class ElementChase : MonoBehaviour
     [SerializeField] private int playerScore;
 	// Use this for initialization
 	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	    if (Input.GetKeyDown(KeyCode.Space))
-	    {
-	        CheckElements();
-	    }
-	}
+        remainingElements = 0;
+        CheckElements();
+
+    }
 
     void CheckElements()
     {
-        remainingElements = 0;
         foreach (Element element in elements)
         {
             if (element.count != element.prevCount)
             {
-                if (element.count > 0)
+                if (element.count > 0 )
                 {
-                    remainingElements++;
+                    if (!element.remaining)
+                    {
+                        element.remaining = true;
+                        remainingElements++;
+                    }
+             
                     element.uiDisp.transform.GetChild(0).GetComponent<Text>().text = element.count.ToString();
                     element.uiDisp.SetActive(true);
                 }
                 else
                 {
+                    element.remaining = false;
+                    remainingElements--;
                     element.uiDisp.transform.GetChild(0).GetComponent<Text>().text = "0";
                     element.uiDisp.SetActive(false);
                 }
+                element.prevCount = element.count;
             }
         }
     }
 
-    public void AddElement(string elementName)
+    public void AddElement(string elementName, bool setNew = false)
     {
         foreach (Element element in elements)
         {
             if (element.name == elementName)
             {
-                if (element.count > 0)
+                if (!setNew)
                 {
-                    element.count--;
+                    if (element.count > 0)
+                    {
+                        element.count--;
+                    }
+                    else
+                    {
+                        playerScore--;
+
+                    }
                 }
                 else
                 {
-                    playerScore--;
-
+                    element.count++;
                 }
+
             }
         }
         CheckElements();
