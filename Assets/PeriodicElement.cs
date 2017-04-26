@@ -20,7 +20,8 @@ public class PeriodicElement : MonoBehaviour
 
     // Use this for initialization
     void Start ()
-	{
+    {
+        timer = Random.Range(timerRange.x, timerRange.y);
 	    rb = GetComponent<Rigidbody2D>();
 	    elementChase = FindObjectOfType<ElementChase>();
 	    anim = GetComponent<Animator>();

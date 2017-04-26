@@ -17,6 +17,7 @@ public class PlayerBanner : MonoBehaviour {
     Banner[] playerBanners = new Banner[4];
     private int charNum = -1;
     // Use this for initialization
+    [SerializeField]
     private Animator anim;
     void Start () {
         anim = GetComponent<Animator>();
@@ -54,8 +55,8 @@ public class PlayerBanner : MonoBehaviour {
             transform.GetChild(0).GetComponent<Text>().text = playerBanners[charNum].playerName;
             transform.GetChild(1).GetComponent<Image>().sprite = playerBanners[charNum].playerPose;
             GetComponent<Image>().sprite = playerBanners[charNum].banner;
-        anim.SetTrigger("Banner!");
-        
+        //anim.SetTrigger("Banner!");
+        anim.Play("PlayerBanner");
 
     }
 }

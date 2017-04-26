@@ -27,6 +27,14 @@ public class ElementChase : MonoBehaviour
 
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            AddElement("Phosphorus", true);
+        }
+    }
+
     void CheckElements()
     {
         foreach (Element element in elements)

@@ -25,12 +25,16 @@ public class Player : MonoBehaviour {
     private Transform target;
     private Animator anim;
     private ParticleSystem exhaust;
+    [SerializeField] private int playerNum;
+    [SerializeField]
+    public PlayerInfo thisPlayer;
 	// Use this for initialization
 	void Start () {
+        thisPlayer = FindObjectOfType<ScoreManager>().transform.GetChild(playerNum).GetComponent<PlayerInfo>();
         tiles = GameObject.Find("Points").GetComponentsInChildren<Tile>();
         exhaust = GetComponentInChildren<ParticleSystem>();
         anim = transform.GetChild(0).GetComponent<Animator>();
-        //tileOffset = Vector3.zero;
+	    //tileOffset = Vector3.zero;
 	}
 	
 	// Update is called once per frame

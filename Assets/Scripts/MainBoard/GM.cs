@@ -13,10 +13,12 @@ public class GM : MonoBehaviour {
     private int[] playerRollNum;
 	// Use this for initialization
     private CameraFollow cameraSetup;
-	void Start () {
+    private PlayerBanner bannerControl;
+	void Start ()
+	{
+	    bannerControl = FindObjectOfType<PlayerBanner>();
 
 	    cameraSetup = FindObjectOfType<CameraFollow>();
-	    playerTurn = Random.Range(0, players.Length);
         players = GameObject.Find("Ships").GetComponentsInChildren<Player>();
         dispManager = GameObject.FindObjectOfType<DisplayManager>();
         if (newGame)
@@ -26,7 +28,9 @@ public class GM : MonoBehaviour {
     }
 	
 	public void NewTurn(int currPlayer)
-    {
+	{
+	    Debug.Log(players[currPlayer].GetComponent<Player>().thisPlayer.characterName);
+        bannerControl.SetPlayer(players[currPlayer].GetComponent<Player>().thisPlayer.characterName);
         cameraSetup.SetTarget(players[currPlayer].transform.GetChild(2));
        // Debug.Log(players[currPlayer].transform.GetChild(2).name);
     }
@@ -34,6 +38,6 @@ public class GM : MonoBehaviour {
     void BeginGame()
     {
         //dispManager.BeginGame();
-        NewTurn(playerTurn);
+        NewTurn(Random.Range(0,players.Length));
     }
 }

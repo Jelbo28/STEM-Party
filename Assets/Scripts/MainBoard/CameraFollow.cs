@@ -51,7 +51,7 @@ public class CameraFollow : MonoBehaviour
 
     [SerializeField] private bool auto;
     [SerializeField] private Vector2 autoPanSpeed;
-     
+    private Vector3 startPos;
 
     private Vector3 mouseOrigin;
     [SerializeField]
@@ -59,11 +59,12 @@ public class CameraFollow : MonoBehaviour
     [SerializeField]
     private bool isRotating;   
     [SerializeField] private bool isZooming;
+    [SerializeField] private float panRange;
 
 
     void Update()
     {
-
+        startPos = transform.position;
         Vector3 relativePos = target.position - transform.position;
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         Quaternion current = transform.localRotation;
@@ -110,8 +111,8 @@ public class CameraFollow : MonoBehaviour
             {
                 Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
                 //Vector3 move = new Vector3 (0, autoPanSpeed,0)  ;
-
-                Vector3 move = new Vector3(pos.x*(panSpeed + shiftBoost), pos.y*(panSpeed + shiftBoost), 0);
+                //Debug.Log(Vector3.Distance(transform.position, startPos));
+                Vector3 move = Vector3.Distance(transform.position, startPos) < panRange ? new Vector3(pos.x*(panSpeed + shiftBoost), pos.y*(panSpeed + shiftBoost), 0) : new Vector3(pos.x * -(panSpeed + shiftBoost), pos.y * -(panSpeed + shiftBoost), 0);
 
 
                 //Debug.Log(move.x);
@@ -124,8 +125,9 @@ public class CameraFollow : MonoBehaviour
 
                 Vector3 move = pos.y*(zoomSpeed + shiftBoost)*transform.forward;
                 transform.Translate(move, Space.World);
+                ZoomRange();
+
             }
-            ZoomRange();
         }
         else
         {
