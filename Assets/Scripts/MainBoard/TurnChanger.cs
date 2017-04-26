@@ -14,6 +14,6 @@ public class TurnChanger : MonoBehaviour
 
     public void ChangeTurn()
     {
-        gameManager.NewTurn();
+       // gameManager.NewTurn();
     }
 }

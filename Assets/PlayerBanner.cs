@@ -20,18 +20,8 @@ public class PlayerBanner : MonoBehaviour {
     private Animator anim;
     void Start () {
         anim = GetComponent<Animator>();
-        SetPlayer("blue");
+        //SetPlayer("blue");
 
-    }
-
-    // Update is called once per frame
-    void Update () {
-		if (Input.GetKeyDown(KeyCode.Space))
-        {
-            charNum++;
-            SetPlayer("green");
-
-        }
     }
 
     public void SetPlayer(string player)

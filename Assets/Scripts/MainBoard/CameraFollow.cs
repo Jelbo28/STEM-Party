@@ -114,7 +114,7 @@ public class CameraFollow : MonoBehaviour
                 Vector3 move = new Vector3(pos.x*(panSpeed + shiftBoost), pos.y*(panSpeed + shiftBoost), 0);
 
 
-                Debug.Log(move.x);
+                //Debug.Log(move.x);
                 transform.Translate(move, Space.Self);
             }
 
