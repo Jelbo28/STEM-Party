@@ -31,7 +31,7 @@ public class ElementChase : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            AddElement("Phosphorus", true);
+            AddElement("Phosphorus", 3, true);
         }
     }
 
@@ -64,7 +64,7 @@ public class ElementChase : MonoBehaviour
         }
     }
 
-    public void AddElement(string elementName, bool setNew = false)
+    public void AddElement(string elementName, int howMany = 1, bool setNew = false)
     {
         foreach (Element element in elements)
         {
@@ -72,19 +72,20 @@ public class ElementChase : MonoBehaviour
             {
                 if (!setNew)
                 {
-                    if (element.count > 0)
+                    if (element.remaining)
                     {
                         element.count--;
                     }
                     else
                     {
                         playerScore--;
+                        break;
 
                     }
                 }
                 else
                 {
-                    element.count++;
+                    element.count += howMany;
                 }
 
             }

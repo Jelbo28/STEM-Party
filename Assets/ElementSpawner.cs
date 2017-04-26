@@ -14,6 +14,7 @@ public class ElementSpawner : MonoBehaviour {
     //public int MinY = 0;
     //public int MaxY = 10;
     public int objectAmmount;
+    private GameObject toCreate;
     //Private
 
 
@@ -25,7 +26,8 @@ public class ElementSpawner : MonoBehaviour {
         for (int i = 0; i < objectAmmount; i++)
         {
             objectType = Mathf.RoundToInt(Random.Range(0, spawnObject.Length)); // Randomly assigns the object being spawned.
-            Instantiate(spawnObject[objectType], PointInArea(), Quaternion.identity, transform); // Generates the object with our specified instruction.
+            toCreate = Instantiate(spawnObject[objectType], PointInArea(), Quaternion.identity, transform) as GameObject; // Generates the object with our specified instruction.
+            toCreate.name = spawnObject[objectType].name;
         }
 
     }

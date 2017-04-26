@@ -47,6 +47,7 @@ public class PeriodicElement : MonoBehaviour
             force = Random.Range(forceRange.x, forceRange.y);
             rb.AddForce(transform.up*force*Time.deltaTime);
             timer = Random.Range(timerRange.x, timerRange.y);
+
         }
         else
         {
@@ -56,6 +57,7 @@ public class PeriodicElement : MonoBehaviour
 
     void OnMouseDown()
     {
+        Debug.Log("eddy");
         elementChase.AddElement(name);
         anim.SetTrigger("Poof");
 
