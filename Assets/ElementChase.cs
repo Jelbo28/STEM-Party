@@ -15,16 +15,31 @@ public class ElementChase : MonoBehaviour
         public bool remaining = false;
         public GameObject uiDisp;
     }
+    [System.Serializable]
+    public class Level
+    {
+        public string molName;
+        public string[] elementsUsed;
+        public int[] howMany;
+        public int molMoveType;
+    }
     [SerializeField]
     private Element[] elements;
+    [SerializeField]
+    private Level[] levels;
 
     [SerializeField] private int remainingElements;
+    [SerializeField]
+    private Text scoreText;
     [SerializeField] private int playerScore;
+  private Transform MoleculeModel;
+    private int currLevel = 0;
 	// Use this for initialization
 	void Start () {
-        remainingElements = 0;
-        CheckElements();
-
+        MoleculeModel = GameObject.Find("3D Molecule").transform;
+        //remainingElements = 0;
+        //CheckElements();
+        BeginLevel();
     }
 
     void Update()
@@ -58,6 +73,7 @@ public class ElementChase : MonoBehaviour
                     remainingElements--;
                     element.uiDisp.transform.GetChild(0).GetComponent<Text>().text = "0";
                     element.uiDisp.SetActive(false);
+                    StartCoroutine(ChangeLevel());
                 }
                 element.prevCount = element.count;
             }
@@ -75,13 +91,17 @@ public class ElementChase : MonoBehaviour
                     if (element.remaining)
                     {
                         element.count--;
+                        playerScore++;
+                        scoreText.text = "Socre: " + playerScore;
                     }
                     else
                     {
                         playerScore--;
+                        scoreText.text = "Socre: " + playerScore;
                         break;
 
                     }
+
                 }
                 else
                 {
@@ -91,5 +111,34 @@ public class ElementChase : MonoBehaviour
             }
         }
         CheckElements();
+    }
+
+    public void BeginLevel()
+    {
+        MoleculeModel.GetChild(1).GetComponent<Text>().text = levels[currLevel].molName;
+        MoleculeModel.GetChild(1).GetComponent<Animator>().SetTrigger("SetName");
+        if (currLevel > 0)
+        {
+            MoleculeModel.GetChild(0).GetComponent<Animator>().SetTrigger("Enter");
+            MoleculeModel.GetChild(0).GetChild(currLevel - 1).gameObject.SetActive(false);
+        }
+
+        MoleculeModel.GetChild(0).GetChild(currLevel).gameObject.SetActive(true);
+        MoleculeModel.GetChild(0).GetComponent<Animator>().SetInteger("MoveType", levels[currLevel].molMoveType);
+        for (int i = 0; i < levels[currLevel].elementsUsed.Length; i++)
+        {
+            AddElement(levels[currLevel].elementsUsed[i], levels[currLevel].howMany[i], true);
+        }
+        currLevel++;
+    }
+
+    IEnumerator ChangeLevel()
+    {
+        if (remainingElements <= 0)
+        {
+            MoleculeModel.GetChild(0).GetComponent<Animator>().SetTrigger("Exit");
+            yield return new WaitForSeconds(2f);
+            BeginLevel();
+        }
     }
 }
