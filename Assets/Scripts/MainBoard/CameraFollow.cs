@@ -60,7 +60,8 @@ public class CameraFollow : MonoBehaviour
     private bool isRotating;   
     [SerializeField] private bool isZooming;
     [SerializeField] private float panRange;
-
+   private Vector3 move;
+    [SerializeField] private bool keyboardMode;
 
     void Update()
     {
@@ -97,7 +98,7 @@ public class CameraFollow : MonoBehaviour
 
             //if (!Input.GetMouseButton(0)) isRotating = false;
             if (!Input.GetMouseButton(0)) isZooming = false;
-            if (!Input.GetMouseButton(1)) isPanning = false;
+            if (!Input.GetMouseButton(1) && !keyboardMode) isPanning = false;
 
             if (isRotating)
             {
@@ -112,11 +113,27 @@ public class CameraFollow : MonoBehaviour
                 Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
                 //Vector3 move = new Vector3 (0, autoPanSpeed,0)  ;
                 //Debug.Log(Vector3.Distance(transform.position, startPos));
-                Vector3 move = Vector3.Distance(transform.position, startPos) < panRange ? new Vector3(pos.x*(panSpeed + shiftBoost), pos.y*(panSpeed + shiftBoost), 0) : new Vector3(pos.x * -(panSpeed + shiftBoost), pos.y * -(panSpeed + shiftBoost), 0);
+                if (!keyboardMode)
+                {
+                     move = new Vector3(pos.x * (panSpeed + shiftBoost), pos.y * (panSpeed + shiftBoost), 0);
 
+                }
+                else
+                {
+                     move = new Vector3(Input.GetAxis("Horizontal") * (panSpeed + shiftBoost) *Time.deltaTime, Input.GetAxis("Vertical") * (panSpeed + shiftBoost) * Time.deltaTime);
+                    //move = new Vector3(Mathf.Clamp(move.x, panRange.x, panRange.y), Mathf.Clamp(move.y, panRange.x, panRange.y), 0);
+
+                    Debug.Log((move));
+                }
 
                 //Debug.Log(move.x);
                 transform.Translate(move, Space.Self);
+                if (Vector3.Distance(transform.position, new Vector3(0, 0, 0)) > panRange)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, new Vector3(0,0,0), (50 + shiftBoost) * Time.deltaTime);
+                }
+                //GetComponent<Rigidbody2D>().velocity = (move*30*Time.deltaTime);
+                //transform.position = Vector3.MoveTowards(transform.position, move, panSpeed* Time.deltaTime);
             }
 
             if (isZooming)
