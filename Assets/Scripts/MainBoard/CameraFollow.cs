@@ -123,7 +123,7 @@ public class CameraFollow : MonoBehaviour
                      move = new Vector3(Input.GetAxis("Horizontal") * (panSpeed + shiftBoost) *Time.deltaTime, Input.GetAxis("Vertical") * (panSpeed + shiftBoost) * Time.deltaTime);
                     //move = new Vector3(Mathf.Clamp(move.x, panRange.x, panRange.y), Mathf.Clamp(move.y, panRange.x, panRange.y), 0);
 
-                    Debug.Log((move));
+                   // Debug.Log((move));
                 }
 
                 //Debug.Log(move.x);
