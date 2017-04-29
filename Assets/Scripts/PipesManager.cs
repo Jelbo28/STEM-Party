@@ -14,24 +14,29 @@ public class PipesManager : MonoBehaviour {
     [SerializeField] private int currLevel = 0;
     [SerializeField] private float levelTimer = 0;
     private RadialProgressMeter progressMeter;
+    private DisplayManager displayManager;
     // Use this for initialization
     void Start ()
     {
+        displayManager = FindObjectOfType<DisplayManager>();
         progressMeter = FindObjectOfType<RadialProgressMeter>();
-        SetLevel();
-
+        StartCoroutine(BeginGame());
     }
 
     // Update is called once per frame
     void Update ()
 	{
-	    if (levelTimer > 0)
-	        levelTimer -= Time.deltaTime;
-	    else
-	    {
-            Time.timeScale = 1;
-            levels[currLevel - 1].catalystPipe.SetTrigger("PipeGo");
+        if (currLevel > 0)
+        {
+            if (levelTimer > 0)
+                levelTimer -= Time.deltaTime;
+            else
+            {
+                Time.timeScale = 1;
+                levels[currLevel - 1].catalystPipe.SetTrigger("PipeGo");
+            }
         }
+
     }
 
     public void SetLevel()
@@ -50,5 +55,12 @@ public class PipesManager : MonoBehaviour {
             Debug.Log("Game Over");
         }
 
+    }
+
+    IEnumerator BeginGame()
+    {
+        displayManager.BeginGame();
+        yield return new WaitForSeconds(3f);
+        SetLevel();
     }
 }

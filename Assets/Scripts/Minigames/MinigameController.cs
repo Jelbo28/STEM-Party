@@ -23,7 +23,7 @@ public class MinigameController : MonoBehaviour
             //stuff.GetComponents(typeof(MonoBehaviour));
             foreach (MonoBehaviour script in stuff.GetComponents(typeof (MonoBehaviour)))
             {
-                scripts.Add(script);
+                    scripts.Add(script);
             }
             foreach (MonoBehaviour script in scripts)
             {

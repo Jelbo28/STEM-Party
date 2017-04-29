@@ -69,7 +69,7 @@ public class Pipe : MonoBehaviour
     {
         if (interactable)
         {
-            transform.Rotate(0, 0, 90);
+            transform.Rotate(0, 0, 90, Space.Self);
             currRotation = transform.rotation.eulerAngles.z;
 
             CheckRotation();
