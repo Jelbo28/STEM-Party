@@ -28,7 +28,7 @@ public class ElementSpawner : MonoBehaviour {
             PoolManager.instance.CreatePool(spawnObject[i], objectAmmount[i]);
             for (int j = 0; j < objectAmmount[i]; j++)
             {
-                poolManager.ReuseObject(spawnObject[i], PointInArea(),Quaternion.identity, spawnObject[i].name);
+                poolManager.ReuseObject(spawnObject[i], PointInArea(),Quaternion.identity);
                 //spawnObject[i].transform.position = PointInArea();
                 //spawnObject[i].SetActive(true);
             }
@@ -58,8 +58,10 @@ public class ElementSpawner : MonoBehaviour {
         return new Vector2(x, y);
     }
 
-    public void Respawn(int elementNum)
+    public void Respawn(GameObject toReuse)
     {
-        poolManager.ReuseObject(spawnObject[elementNum], PointInArea(), Quaternion.identity, spawnObject[elementNum].name);
+        //toReuse.SetActive(false);
+        toReuse.transform.position = PointInArea();
+        //spawnObject[elementNum].SetActive(true);
     }
 }

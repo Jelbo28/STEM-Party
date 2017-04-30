@@ -40,7 +40,7 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-    public void ReuseObject(GameObject prefab, Vector3 position, Quaternion rotation, string origName = "bobo")
+    public void ReuseObject(GameObject prefab, Vector3 position, Quaternion rotation)
     {
         int poolKey = prefab.GetInstanceID();
 
@@ -48,7 +48,7 @@ public class PoolManager : MonoBehaviour
         {
             ObjectInstance objectToReuse = poolDictionary[poolKey].Dequeue();
             poolDictionary[poolKey].Enqueue(objectToReuse);
-            objectToReuse.Reuse(position, rotation, origName);
+            objectToReuse.Reuse(position, rotation);
 
         }
     }
@@ -73,7 +73,7 @@ public class PoolManager : MonoBehaviour
                 poolObjectScript = gameObject.GetComponent<PoolObject>();
             }
         }
-        public void Reuse(Vector3 position, Quaternion rotation, string origName)
+        public void Reuse(Vector3 position, Quaternion rotation)
         {
             if (hasPoolObjectComponent)
             {
@@ -81,7 +81,6 @@ public class PoolManager : MonoBehaviour
             }
 
             gameObject.SetActive(true);
-            gameObject.name = origName;
             transform.position = position;
             transform.rotation = rotation;
         }

@@ -21,8 +21,9 @@ public class PeriodicElement : MonoBehaviour
     private ElementSpawner elementSpawner;
 
     // Use this for initialization
-    void Start ()
+    void Awake ()
     {
+        Debug.Log("hi guys");
         elementSpawner = FindObjectOfType<ElementSpawner>();
         timer = Random.Range(timerRange.x, timerRange.y);
 	    rb = GetComponent<Rigidbody2D>();
@@ -69,13 +70,17 @@ public class PeriodicElement : MonoBehaviour
     void OnTriggerExit2D(Collider2D other)
     {
         //Debug.Log("pizza");
+        
+            Respawn();
 
-        Respawn();
+        
     }
 
      public void Respawn()
-    {
-        elementSpawner.Respawn(elementNumber);
-        gameObject.SetActive(false);
+     {
+        //Debug.Log("pizza");
+        
+        elementSpawner.Respawn(gameObject);
+        //gameObject.SetActive(false);
     }
 }
