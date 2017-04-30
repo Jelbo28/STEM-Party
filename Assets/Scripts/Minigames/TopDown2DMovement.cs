@@ -23,9 +23,12 @@ public class TopDown2DMovement : MonoBehaviour
     [SerializeField] public PlayerInfo thisPlayer;
     [SerializeField] public float waitAI;
     [SerializeField] public float walkSpeed;
-
+    [SerializeField]
+    private TopDown2DMovement[] playersAlive;
+    private MinigameController minigameController;
     private void Start()
     {
+        minigameController = FindObjectOfType<MinigameController>();
         //waitAI = AIWaitPeriod;
 
         minigameCC = FindObjectOfType<CartesianCatastrophie>();
@@ -123,5 +126,15 @@ public class TopDown2DMovement : MonoBehaviour
     public void Damage()
     {
         audio.Play();
+        playersAlive = FindObjectsOfType<TopDown2DMovement>();
+        Debug.Log(name + " = " + playersAlive.Length);
+        if (playersAlive.Length == 1)
+        {
+            minigameController.endGame = true;
+            thisPlayer.mingameWins += 10;
+        }
+
+        thisPlayer.SetPlace(playersAlive.Length);
+
     }
 }

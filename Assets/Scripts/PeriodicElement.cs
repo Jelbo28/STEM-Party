@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PeriodicElement : MonoBehaviour
 {
+    [SerializeField] private int elementNumber;
     [SerializeField] private float timer;
     [SerializeField] private float force;
     private Animator anim;
@@ -17,9 +18,12 @@ public class PeriodicElement : MonoBehaviour
     [SerializeField]
     private Vector2 forceRange;
 
+    private ElementSpawner elementSpawner;
+
     // Use this for initialization
     void Start ()
     {
+        elementSpawner = FindObjectOfType<ElementSpawner>();
         timer = Random.Range(timerRange.x, timerRange.y);
 	    rb = GetComponent<Rigidbody2D>();
 	    elementChase = FindObjectOfType<ElementChase>();
@@ -60,5 +64,18 @@ public class PeriodicElement : MonoBehaviour
         elementChase.AddElement(name);
         anim.SetTrigger("Poof");
 
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        //Debug.Log("pizza");
+
+        Respawn();
+    }
+
+     public void Respawn()
+    {
+        elementSpawner.Respawn(elementNumber);
+        gameObject.SetActive(false);
     }
 }

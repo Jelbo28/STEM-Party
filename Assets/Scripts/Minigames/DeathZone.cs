@@ -22,7 +22,7 @@ public class DeathZone : MonoBehaviour
             if (other.gameObject.name == target)
             {
                 toKill = other.transform;
-                toKill.parent.GetComponent<AudioSource>().Play();
+                toKill.parent.GetComponent<TopDown2DMovement>().Damage();
                 Destroy(toKill.parent.gameObject, 3f);
                 toKill.GetChild(0).gameObject.SetActive(true);
                 toKill.parent.GetComponent<TopDown2DMovement>().walkSpeed -= 2.5f;

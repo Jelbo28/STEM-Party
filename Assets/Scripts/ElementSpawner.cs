@@ -13,21 +13,28 @@ public class ElementSpawner : MonoBehaviour {
     //public int MaxX = 10;
     //public int MinY = 0;
     //public int MaxY = 10;
-    public int objectAmmount;
+    public int[] objectAmmount;
     private GameObject toCreate;
     //Private
+    //private GameObject instantObject;
 
-
+    private PoolManager poolManager;
     void Start()
     {
-
+        poolManager = FindObjectOfType<PoolManager>();
         //Debug.Log("Spawn");
-        int objectType = 0;
-        for (int i = 0; i < objectAmmount; i++)
+        for (int i = 0; i < spawnObject.Length; i++)
         {
-            objectType = Mathf.RoundToInt(Random.Range(0, spawnObject.Length)); // Randomly assigns the object being spawned.
-            toCreate = Instantiate(spawnObject[objectType], PointInArea(), Quaternion.identity, transform) as GameObject; // Generates the object with our specified instruction.
-            toCreate.name = spawnObject[objectType].name;
+            PoolManager.instance.CreatePool(spawnObject[i], objectAmmount[i]);
+            for (int j = 0; j < objectAmmount[i]; j++)
+            {
+                poolManager.ReuseObject(spawnObject[i], PointInArea(),Quaternion.identity, spawnObject[i].name);
+                //spawnObject[i].transform.position = PointInArea();
+                //spawnObject[i].SetActive(true);
+            }
+ 
+            //spawnObject[i].name = spawnObject[i].name;
+            //spawnObject[i.transform.SetParent(GameObject.Find("ElementChase").transform.GetChild(0));
         }
 
     }
@@ -45,9 +52,14 @@ public class ElementSpawner : MonoBehaviour {
             x = Random.Range(center.x - bounds.extents.x, center.x + bounds.extents.x);
             y = Random.Range(center.y - bounds.extents.y, center.y + bounds.extents.y);
             attempt++;
-        } while (!GetComponent<PolygonCollider2D>().OverlapPoint(new Vector2(x, y)) && attempt <= 100);
+        } while (!GetComponent<CircleCollider2D>().OverlapPoint(new Vector2(x, y)) && attempt <= 100);
 
 
         return new Vector2(x, y);
+    }
+
+    public void Respawn(int elementNum)
+    {
+        poolManager.ReuseObject(spawnObject[elementNum], PointInArea(), Quaternion.identity, spawnObject[elementNum].name);
     }
 }

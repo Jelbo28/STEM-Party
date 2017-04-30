@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NextScene : MonoBehaviour {
     [SerializeField]
-    bool instaQuit = false;
+    public bool instaQuit = false;
     [SerializeField]
     string sceneTo;
     [SerializeField]
@@ -25,16 +25,35 @@ public class NextScene : MonoBehaviour {
         }
     }
 
-    public void ChangeScene()
+    public void ChangeScene(string scene = " ")
     {
         if (!instaQuit)
         {
-            sceneChanger.LoadSceneByName(sceneTo);
+            if (sceneTo == "")
+            {
+                sceneChanger.LoadSceneByName(scene);
+
+            }
+            else
+            {
+                sceneChanger.LoadSceneByName(sceneTo);
+
+            }
 
         }
         else
         {
             Application.Quit();
         }
+    }
+
+    public void SetDelay(float delaySet)
+    {
+        sceneChanger.SetDelay(delaySet);
+    }
+
+    public void Quit()
+    {
+        instaQuit = true;
     }
 }
