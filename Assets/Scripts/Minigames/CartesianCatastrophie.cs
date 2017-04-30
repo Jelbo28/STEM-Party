@@ -20,6 +20,8 @@ public class CartesianCatastrophie : MonoBehaviour
     [HideInInspector]
     public PlayerInfo[] playerInfo;
 
+    public int correct = 0;
+
     private MinigameController minigameController;
     // Use this for initialization
     private void Awake()
@@ -57,12 +59,34 @@ public class CartesianCatastrophie : MonoBehaviour
                 coordinates = new Vector2(Random.Range(-99, 99), Random.Range(-99, 99));
             }
             coordinatesText[0].text = coordinates.ToString("f0");
+            if (coordinates.x > 0 && coordinates.y > 0)
+            {
+                correct = 0;
+            }
+            else if (coordinates.x < 0 && coordinates.y > 0)
+            {
+                correct = 1;
+            }
+            else if (coordinates.x < 0 && coordinates.y < 0)
+            {
+                correct = 2;
+            }
+            else if (coordinates.x > 0 && coordinates.y < 0)
+
+            {
+                correct = 3;
+            }
         }
     }
 
     public void SetCoordinates()
     {
         coordinatesText[1].text = coordinates.ToString("f0");
+        foreach (TopDown2DMovement player in players)
+        {
+                //player.correctTile = correct;
+            player.go = true;
+        }
         timerOn = true;
     }
 

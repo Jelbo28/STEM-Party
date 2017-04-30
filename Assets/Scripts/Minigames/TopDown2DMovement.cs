@@ -2,46 +2,35 @@
 
 public class TopDown2DMovement : MonoBehaviour
 {
-    //[SerializeField] private float AIWaitPeriod;
-    [SerializeField] private Letter[] blocks;
-    private float curSpeed;
-    [HideInInspector] public bool go;
     // Normal Movements Variables
     //AI Variables
-    [SerializeField]
-    private bool AI;
-    [SerializeField]
-    private bool move = true;
-    [SerializeField]
-    public float waitAI;
-    [SerializeField]
-    private float inteligence;
-    [SerializeField]
-    private Vector2 moveBounds;
-    [SerializeField]
-    private Vector3 destination;
-    private Vector3 lastDest;
-
-    //Minigame Specification Variables
-    [SerializeField] private string minigameName;
-    private CartesianCatastrophie minigameCC;
+    [SerializeField] private bool AI;
     private AudioSource audio;
-
+    //[SerializeField] private float AIWaitPeriod;
+    [SerializeField] private Letter[] blocks;
+    public int correctTile = 0;
+    private float curSpeed;
+    [SerializeField] private Vector3 destination;
+    [HideInInspector] public bool go = false;
+    [SerializeField] public float inteligence;
+    private Vector3 lastDest;
+    //Minigame Variables
+    private CartesianCatastrophie minigameCC;
+    [SerializeField] private bool move = true;
+    [SerializeField] private Vector2 moveBounds;
     private PlayerInfo[] players;
     private Rigidbody rBody;
     [SerializeField] public PlayerInfo thisPlayer;
+    [SerializeField] public float waitAI;
     [SerializeField] public float walkSpeed;
 
     private void Start()
     {
         //waitAI = AIWaitPeriod;
-        switch (minigameName.Trim().ToLower())
-        {
-            case "cartesiancatastrophie":
-                minigameCC = FindObjectOfType<CartesianCatastrophie>();
-                blocks = GameObject.Find("Blocks").GetComponentsInChildren<Letter>();
-                break;
-        }
+
+        minigameCC = FindObjectOfType<CartesianCatastrophie>();
+        blocks = GameObject.Find("Blocks").GetComponentsInChildren<Letter>();
+
         rBody = GetComponent<Rigidbody>();
         players = FindObjectOfType<ScoreManager>().transform.GetComponentsInChildren<PlayerInfo>();
         foreach (PlayerInfo player in players)
@@ -52,11 +41,11 @@ public class TopDown2DMovement : MonoBehaviour
             }
         }
 
-            AI = thisPlayer.AI;
+        AI = thisPlayer.AI;
         audio = GetComponent<AudioSource>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         curSpeed = walkSpeed;
         if (!AI)
@@ -89,72 +78,44 @@ public class TopDown2DMovement : MonoBehaviour
         }
         else
         {
-            if (minigameCC != null)
+            while (lastDest == destination)
             {
-                while (lastDest == destination)
+                Debug.Log("WTF");
+                if (inteligence > 5)
                 {
+                    Debug.Log(blocks[minigameCC.correct].transform.name);
+                    destination = blocks[minigameCC.correct].transform.GetChild(0).position +
+                                      new Vector3(Random.Range(-moveBounds.x, moveBounds.x), 0,
+                                          Random.Range(-moveBounds.y, moveBounds.y));
+                }
+                else
+                {
+                    destination = blocks[Random.Range(0, blocks.Length)].transform.position +
+                                      new Vector3(Random.Range(-moveBounds.x, moveBounds.x), 0,
+                                          Random.Range(-moveBounds.y, moveBounds.y));
                     inteligence = Random.Range(inteligence, inteligence + 7);
-                    if (inteligence > 5)
-                    {
-                        int correct = 0;
-                        if (minigameCC.coordinates.x > 0 && minigameCC.coordinates.y > 0)
-                        {
-                            correct = 0;
-                        }
-                        else if (minigameCC.coordinates.x < 0 && minigameCC.coordinates.y > 0)
-                        {
-                            correct = 1;
-                        }
-                        else if (minigameCC.coordinates.x < 0 && minigameCC.coordinates.y < 0)
-                        {
-                            correct = 2;
-                        }
-                        else if (minigameCC.coordinates.x > 0 && minigameCC.coordinates.y < 0)
-
-                        {
-                            correct = 3;
-                        }
-                        destination = blocks[correct].transform.GetChild(0).position +
-                                      new Vector3(Random.Range(-moveBounds.x, moveBounds.x), 0,
-                                          Random.Range(-moveBounds.y, moveBounds.y));
-                    }
-                    else
-                    {
-                        destination = blocks[Random.Range(0, blocks.Length)].transform.position +
-                                      new Vector3(Random.Range(-moveBounds.x, moveBounds.x), 0,
-                                          Random.Range(-moveBounds.y, moveBounds.y));
-                    }
-                    destination.y = transform.position.y;
-                    //    Random.Range(-moveBounds.y, moveBounds.y));
                 }
+                destination.y = transform.position.y;
+                //    Random.Range(-moveBounds.y, moveBounds.y));
             }
-            else
+            Debug.Log(name + " = " + destination);
+
+            if (Mathf.Abs(Vector3.Distance(transform.position, destination)) <= .1f)
             {
-                while (lastDest == destination)
-                {
-                    destination = (Vector3) (newDest != null ? newDest+
-                                                               new Vector3(Random.Range(-moveBounds.x, moveBounds.x), 0,
-                                                                   Random.Range(-moveBounds.y, moveBounds.y)) : new Vector3(Random.Range(-moveBounds.x, moveBounds.x), 0,
-                                                                       Random.Range(-moveBounds.y, moveBounds.y)));
-                }
-
-
-            }
-        //waitAI = AIWaitPeriod;
-
-
-            if (Mathf.Abs(Vector3.Distance(transform.position, destination)) <= .1f ||
-                Mathf.Abs(rBody.velocity.y) > .2f)
-            {
+                Debug.Log("jerry");
                 rBody.velocity = new Vector3(0, rBody.velocity.y, 0);
                 go = false;
                 lastDest = destination;
             }
             else
             {
-                Vector3 changeVelocity = (destination - transform.position).normalized*walkSpeed;
-                rBody.velocity = new Vector3(changeVelocity.x, rBody.velocity.y, changeVelocity.z);
-                transform.rotation = Quaternion.LookRotation(rBody.velocity);
+                transform.rotation = Quaternion.LookRotation(destination - transform.position);
+                //rBody.AddForce((destination - transform.position).normalized * 300);
+                rBody.AddForce(transform.forward * 50);
+                //Vector3 changeVelocity = (destination - transform.position)*walkSpeed;
+                //rBody.velocity = new Vector3(changeVelocity.x, rBody.velocity.y, changeVelocity.z);
+                //Debug.Log(name +" = "+rBody.velocity);
+                go = false;
             }
         }
     }

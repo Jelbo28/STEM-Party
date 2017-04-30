@@ -12,11 +12,20 @@ public class MinigameController : MonoBehaviour
     [SerializeField] private float startDelay;
     [SerializeField] public GameObject[] stuffToDisable;
     [SerializeField] private MonoBehaviour[] thangs;
-
+    private int dataPts = 0;
 
     private DisplayManager displayManager;
+    private PlayerInfo thisPlayer;
     private void Start()
     {
+        foreach (PlayerInfo player in FindObjectOfType<ScoreManager>().players)
+        {
+            if (player.thisUser == true)
+            {
+                thisPlayer = player;
+                break;
+            }
+        }
         displayManager = FindObjectOfType<DisplayManager>();
         foreach (GameObject stuff in stuffToDisable)
         {
@@ -69,6 +78,11 @@ public class MinigameController : MonoBehaviour
     }
 
 
-
+    public void AddPoints(int ammount)
+    {
+        dataPts += ammount;
+        thisPlayer.mingamePts = dataPts;
+        displayManager.UpdatePoints(dataPts);
+    }
 
 }

@@ -1,69 +1,49 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityStandardAssets.ImageEffects;
 
 public class ElementChase : MonoBehaviour
 {
-    [System.Serializable]
-    public class Element
-    {
-        public string name;
-        public int count;
-        public int prevCount;
-        public bool remaining = false;
-        public GameObject uiDisp;
-    }
-    [System.Serializable]
-    public class Level
-    {
-        public string molName;
-        public string[] elementsUsed;
-        public int[] howMany;
-        public int molMoveType;
-    }
-    [SerializeField]
-    private Element[] elements;
-    [SerializeField]
-    private Level[] levels;
-
-    [SerializeField] private int remainingElements;
-    [SerializeField]
-    private Text scoreText;
+    private int currLevel;
+    [SerializeField] private Element[] elements;
+    [SerializeField] private Level[] levels;
+    private Transform MoleculeModel;
     [SerializeField] private int playerScore;
-  private Transform MoleculeModel;
-    private int currLevel = 0;
-	// Use this for initialization
-	void Start () {
+    [SerializeField] private int remainingElements;
+    [SerializeField] private Text scoreText;
+    // Use this for initialization
+    private void Start()
+    {
         MoleculeModel = GameObject.Find("3D Molecule").transform;
         //remainingElements = 0;
         //CheckElements();
         BeginLevel();
     }
 
-    void Update()
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            AddElement("Phosphorus", 3, true);
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    currLevel++;
+        //    StartCoroutine(ChangeLevel());
+        //}
     }
 
-    void CheckElements()
+    private void CheckElements()
     {
         foreach (Element element in elements)
         {
             if (element.count != element.prevCount)
             {
-                if (element.count > 0 )
+                if (element.count > 0)
                 {
                     if (!element.remaining)
                     {
                         element.remaining = true;
                         remainingElements++;
                     }
-             
+
                     element.uiDisp.transform.GetChild(0).GetComponent<Text>().text = element.count.ToString();
                     element.uiDisp.SetActive(true);
                 }
@@ -92,22 +72,19 @@ public class ElementChase : MonoBehaviour
                     {
                         element.count--;
                         playerScore++;
-                        scoreText.text = "Socre: " + playerScore;
+                        scoreText.text = "Score: " + playerScore;
                     }
                     else
                     {
                         playerScore--;
-                        scoreText.text = "Socre: " + playerScore;
+                        scoreText.text = "Score: " + playerScore;
                         break;
-
                     }
-
                 }
                 else
                 {
                     element.count += howMany;
                 }
-
             }
         }
         CheckElements();
@@ -125,20 +102,48 @@ public class ElementChase : MonoBehaviour
 
         MoleculeModel.GetChild(0).GetChild(currLevel).gameObject.SetActive(true);
         MoleculeModel.GetChild(0).GetComponent<Animator>().SetInteger("MoveType", levels[currLevel].molMoveType);
-        for (int i = 0; i < levels[currLevel].elementsUsed.Length; i++)
+        for (var i = 0; i < levels[currLevel].elementsUsed.Length; i++)
         {
             AddElement(levels[currLevel].elementsUsed[i], levels[currLevel].howMany[i], true);
         }
         currLevel++;
     }
 
-    IEnumerator ChangeLevel()
+    private IEnumerator ChangeLevel()
     {
-        if (remainingElements <= 0)
+        if (currLevel < levels.Length)
         {
-            MoleculeModel.GetChild(0).GetComponent<Animator>().SetTrigger("Exit");
-            yield return new WaitForSeconds(2f);
-            BeginLevel();
+            if (remainingElements <= 0)
+            {
+                MoleculeModel.GetChild(0).GetComponent<Animator>().SetTrigger("Exit");
+                yield return new WaitForSeconds(2f);
+                BeginLevel();
+            }
         }
+        else
+        {
+            Debug.Log("Gomewover");
+        }
+    }
+
+
+
+    [Serializable]
+    public class Element
+    {
+        public int count;
+        public string name;
+        public int prevCount;
+        public bool remaining;
+        public GameObject uiDisp;
+    }
+
+    [Serializable]
+    public class Level
+    {
+        public string[] elementsUsed;
+        public int[] howMany;
+        public int molMoveType;
+        public string molName;
     }
 }

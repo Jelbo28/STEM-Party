@@ -103,6 +103,7 @@ public class Pipe : MonoBehaviour
             {
 
                 neighbor.GetComponent<Animator>().SetBool("Break", !neighbor.correctRot);
+                manager.minigameController.AddPoints(1);
                 neighbor.GetComponent<Animator>().SetTrigger("PipeGo");
             }
         }

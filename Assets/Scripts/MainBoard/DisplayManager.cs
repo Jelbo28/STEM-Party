@@ -12,14 +12,19 @@ public class DisplayManager : MonoBehaviour {
     private GameObject Fade;
     [SerializeField]
     private GameObject[] GameText;
+
+    [SerializeField] private Text PtsText;
     [SerializeField]
     private float endDelay;
 
     private SceneChanger sceneChanger;
-
+    private string origText;
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
+        origText = PtsText.text;
+        PtsText.text = origText + 0;
         sceneChanger = FindObjectOfType<SceneChanger>();
         Fade.GetComponent<Animator>().SetTrigger("FadeIn");
         //gameStart = GameObject.Find("GameStartText");
@@ -66,5 +71,10 @@ public class DisplayManager : MonoBehaviour {
             Cursor.visible = true;
             sceneChanger.LoadSceneByName("Minigame Results");
         }
+    }
+
+    public void UpdatePoints(float value)
+    {
+        PtsText.text = origText + value;
     }
 }

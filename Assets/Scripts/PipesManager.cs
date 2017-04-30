@@ -15,18 +15,21 @@ public class PipesManager : MonoBehaviour {
     [SerializeField] private float levelTimer = 0;
     private RadialProgressMeter progressMeter;
     private DisplayManager displayManager;
+    public MinigameController minigameController;
+    private bool gameOver = false;
     // Use this for initialization
     void Start ()
     {
+        minigameController = FindObjectOfType<MinigameController>();
         displayManager = FindObjectOfType<DisplayManager>();
         progressMeter = FindObjectOfType<RadialProgressMeter>();
-        StartCoroutine(BeginGame());
+BeginGame();
     }
 
     // Update is called once per frame
     void Update ()
 	{
-        if (currLevel > 0)
+        if (currLevel > 0 && !gameOver)
         {
             if (levelTimer > 0)
                 levelTimer -= Time.deltaTime;
@@ -36,12 +39,16 @@ public class PipesManager : MonoBehaviour {
                 levels[currLevel - 1].catalystPipe.SetTrigger("PipeGo");
             }
         }
+        else
+        {
+            displayManager.EndGameScreen();
+        }
 
     }
 
     public void SetLevel()
     {
-        if (currLevel <= levels.Length)
+        if (currLevel < levels.Length)
         {
             if (currLevel != 0)
                 levels[currLevel - 1].levelObject.SetActive(false);
@@ -52,15 +59,17 @@ public class PipesManager : MonoBehaviour {
         }
         else
         {
-            Debug.Log("Game Over");
+            Time.timeScale = 1;
+            gameOver = true;
+            //Debug.Log("Game Over");
         }
 
     }
 
-    IEnumerator BeginGame()
+    void BeginGame()
     {
         displayManager.BeginGame();
-        yield return new WaitForSeconds(3f);
+        //yield return new WaitForSeconds(3f);
         SetLevel();
     }
 }
