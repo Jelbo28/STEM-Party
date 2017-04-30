@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class EquationsManager : MonoBehaviour {
@@ -12,8 +13,12 @@ public class EquationsManager : MonoBehaviour {
 
     [SerializeField] private QuestionPanel[] questions;
     [SerializeField] private int questionNumber = 0;
+    private MinigameController minigameController;
+    [SerializeField] private Text correctDisplay;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
+	    minigameController = FindObjectOfType<MinigameController>();
 		NextQuestion();
 	}
 	
@@ -24,24 +29,41 @@ public class EquationsManager : MonoBehaviour {
 
     public void Respond(int answer)
     {
-        if (answer == questions[questionNumber-1].correctOption)
+        Debug.Log(answer);
+        if (answer == questions[questionNumber].correctOption)
         {
-            Debug.Log("Correct!");
-            NextQuestion();
+            minigameController.AddPoints(3);
+            correctDisplay.text = "Correct!";
+            //correctDisplay.color = answer == questions[questionNumber - 1].correctOption ? Color.green : Color.red;
+            correctDisplay.GetComponent<Animator>().SetBool("Correct", true);
+            StartCoroutine(NextQuestion());
         }
         else
         {
-            Debug.Log("Wrong!");
-
+            minigameController.AddPoints(-1);
+            correctDisplay.GetComponent<Animator>().SetBool("Correct", false);
+            correctDisplay.text = "Incorrect!";
         }
+        correctDisplay.GetComponent<Animator>().SetTrigger("Go");
+
     }
 
-    void NextQuestion()
-    {
-        if (questionNumber > 0)
-            questions[questionNumber - 1].toEnable.SetActive(false);
-        questions[questionNumber].toEnable.SetActive(true);
+     IEnumerator NextQuestion()
+     {
+
+            yield return new WaitForSeconds(1);
+            questions[questionNumber].toEnable.SetActive(false);
         questionNumber++;
+        if (questionNumber < questions.Length)
+        {
+            questions[questionNumber].toEnable.SetActive(true);
+        }
+         else
+         {
+             minigameController.endGame = true;
+         }
+
+
 
     }
 }

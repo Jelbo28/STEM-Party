@@ -15,7 +15,7 @@ public class MinigameController : MonoBehaviour
     private int dataPts = 0;
 
     private DisplayManager displayManager;
-    private PlayerInfo thisPlayer;
+    public PlayerInfo thisPlayer;
     private void Start()
     {
         foreach (PlayerInfo player in FindObjectOfType<ScoreManager>().players)

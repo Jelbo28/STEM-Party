@@ -56,7 +56,7 @@ public class PeriodicElement : MonoBehaviour
 
     void OnMouseDown()
     {
-        Debug.Log("eddy");
+        //Debug.Log("eddy");
         elementChase.AddElement(name);
         anim.SetTrigger("Poof");
 

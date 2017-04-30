@@ -11,14 +11,17 @@ public class ElementChase : MonoBehaviour
     private Transform MoleculeModel;
     [SerializeField] private int playerScore;
     [SerializeField] private int remainingElements;
-    [SerializeField] private Text scoreText;
+    [SerializeField] private Text molText;
+    private MinigameController minigameController;
     // Use this for initialization
     private void Start()
     {
+        molText = GameObject.Find("MolText").GetComponent<Text>();
+        minigameController = FindObjectOfType<MinigameController>();
         MoleculeModel = GameObject.Find("3D Molecule").transform;
         //remainingElements = 0;
         //CheckElements();
-        BeginLevel();
+        StartCoroutine(StartGame());
     }
 
     private void Update()
@@ -72,12 +75,12 @@ public class ElementChase : MonoBehaviour
                     {
                         element.count--;
                         playerScore++;
-                        scoreText.text = "Score: " + playerScore;
+                        minigameController.AddPoints(1);
                     }
                     else
                     {
                         playerScore--;
-                        scoreText.text = "Score: " + playerScore;
+                        minigameController.AddPoints(-1);
                         break;
                     }
                 }
@@ -92,17 +95,17 @@ public class ElementChase : MonoBehaviour
 
     public void BeginLevel()
     {
-        MoleculeModel.GetChild(1).GetComponent<Text>().text = levels[currLevel].molName;
-        MoleculeModel.GetChild(1).GetComponent<Animator>().SetTrigger("SetName");
+        molText.text = levels[currLevel].molName;
+        molText.GetComponent<Animator>().SetTrigger("SetName");
+        MoleculeModel.GetChild(0).GetComponent<Animator>().SetTrigger("Enter");
         if (currLevel > 0)
         {
-            MoleculeModel.GetChild(0).GetComponent<Animator>().SetTrigger("Enter");
             MoleculeModel.GetChild(0).GetChild(currLevel - 1).gameObject.SetActive(false);
         }
 
         MoleculeModel.GetChild(0).GetChild(currLevel).gameObject.SetActive(true);
         MoleculeModel.GetChild(0).GetComponent<Animator>().SetInteger("MoveType", levels[currLevel].molMoveType);
-        for (var i = 0; i < levels[currLevel].elementsUsed.Length; i++)
+        for (int i = 0; i < levels[currLevel].elementsUsed.Length; i++)
         {
             AddElement(levels[currLevel].elementsUsed[i], levels[currLevel].howMany[i], true);
         }
@@ -122,11 +125,16 @@ public class ElementChase : MonoBehaviour
         }
         else
         {
+            //minigameController.endGame = true;
             Debug.Log("Gomewover");
         }
     }
 
-
+    IEnumerator StartGame()
+    {
+        yield return new WaitForSeconds(4f);
+        BeginLevel();
+    }
 
     [Serializable]
     public class Element

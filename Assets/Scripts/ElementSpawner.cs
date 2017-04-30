@@ -21,7 +21,7 @@ public class ElementSpawner : MonoBehaviour {
     void Start()
     {
 
-        Debug.Log("Spawn");
+        //Debug.Log("Spawn");
         int objectType = 0;
         for (int i = 0; i < objectAmmount; i++)
         {

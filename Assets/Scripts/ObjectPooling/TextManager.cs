@@ -16,16 +16,18 @@ public class TextManager : MonoBehaviour {
     int pointScore;
 
     int pointTotal;
-
+    private MinigameController minigameController;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
+	    minigameController = FindObjectOfType<MinigameController>();
         StartCoroutine(TextLoop());
-        scoreText.text = "Score: " + pointTotal;
+        scoreText.text = "Data Pts: " + pointTotal;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        scoreText.text = "Score: " + pointTotal;
+        scoreText.text = "Data Pts: " + pointTotal;
     }
 
     public void Score(Vector2 valueRange)
@@ -37,19 +39,16 @@ public class TextManager : MonoBehaviour {
     IEnumerator TextLoop()
     {
         int i = 1;
-        while (1 == 1)
+        while (i < creditComponents.Length)
         {
             yield return new WaitForSeconds(5);
 
            creditComponents[i].SetActive(true);
             i++;
-            if (i >= creditComponents.Length)
-            {
-                StopAllCoroutines();
-            }
 
             //Debug.Log("Bobbbbb");
         }
+        minigameController.endGame = true;
 
     }
 
@@ -64,5 +63,6 @@ public class TextManager : MonoBehaviour {
             yield return null;
         }
         pointTotal = target;
+        minigameController.thisPlayer.mingamePts = pointTotal;
     }
 }
