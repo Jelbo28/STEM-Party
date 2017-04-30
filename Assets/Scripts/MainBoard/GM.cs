@@ -1,43 +1,40 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class GM : MonoBehaviour {
-
-    [SerializeField]
-    private Player[] players;
-    [SerializeField]
-    private bool newGame;
-    private DisplayManager dispManager;
-    private int playerTurn;
-    private int[] playerRollNum;
-	// Use this for initialization
-    private CameraFollow cameraSetup;
+public class GM : MonoBehaviour
+{
     private PlayerBanner bannerControl;
-	void Start ()
-	{
-	    bannerControl = FindObjectOfType<PlayerBanner>();
+    // Use this for initialization
+    private CameraFollow cameraSetup;
+    private DisplayManager dispManager;
+    [SerializeField] private bool newGame;
+    private int[] playerRollNum;
+    [SerializeField] private Player[] players;
+    private int playerTurn;
 
-	    cameraSetup = FindObjectOfType<CameraFollow>();
+    private void Start()
+    {
+        bannerControl = FindObjectOfType<PlayerBanner>();
+
+        cameraSetup = FindObjectOfType<CameraFollow>();
         players = GameObject.Find("Ships").GetComponentsInChildren<Player>();
-        dispManager = GameObject.FindObjectOfType<DisplayManager>();
+        dispManager = FindObjectOfType<DisplayManager>();
         if (newGame)
         {
             BeginGame();
         }
     }
-	
-	public void NewTurn(int currPlayer)
-	{
-	    Debug.Log(players[currPlayer].GetComponent<Player>().thisPlayer.characterName);
+
+    public void NewTurn(int currPlayer)
+    {
+        Debug.Log(players[currPlayer].GetComponent<Player>().thisPlayer.characterName);
         bannerControl.SetPlayer(players[currPlayer].GetComponent<Player>().thisPlayer.characterName);
         cameraSetup.SetTarget(players[currPlayer].transform.GetChild(2));
-       // Debug.Log(players[currPlayer].transform.GetChild(2).name);
+        // Debug.Log(players[currPlayer].transform.GetChild(2).name);
     }
 
-    void BeginGame()
+    private void BeginGame()
     {
         //dispManager.BeginGame();
-        NewTurn(Random.Range(0,players.Length));
+        NewTurn(Random.Range(0, players.Length));
     }
 }

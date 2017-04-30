@@ -1,50 +1,42 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PeriodicElement : MonoBehaviour
 {
-    [SerializeField] private int elementNumber;
-    [SerializeField] private float timer;
-    [SerializeField] private float force;
     private Animator anim;
     private ElementChase elementChase;
-    private Rigidbody2D rb;
-    private float newRot;
-    [SerializeField] private Vector2 timerRange;
-    [SerializeField]
-    private float rotRange;
-
-    [SerializeField]
-    private Vector2 forceRange;
-
+    [SerializeField] private int elementNumber;
     private ElementSpawner elementSpawner;
+    [SerializeField] private float force;
+    [SerializeField] private Vector2 forceRange;
+    private float newRot;
+    private Rigidbody2D rb;
+    [SerializeField] private float rotRange;
     [SerializeField] private string thisElement;
-
+    [SerializeField] private float timer;
+    [SerializeField] private Vector2 timerRange;
     // Use this for initialization
-    void Awake ()
+    private void Awake()
     {
         name = thisElement;
         //Debug.Log("hi guys");
         elementSpawner = FindObjectOfType<ElementSpawner>();
         timer = Random.Range(timerRange.x, timerRange.y);
-	    rb = GetComponent<Rigidbody2D>();
-	    elementChase = FindObjectOfType<ElementChase>();
-	    anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        elementChase = FindObjectOfType<ElementChase>();
+        anim = GetComponent<Animator>();
         newRot = Random.Range(-rotRange, rotRange);
 
         //timer = Random.Range(timerRange.x, timerRange.y);
     }
 
-    void Update()
+    private void Update()
     {
         if (timer > 0)
         {
             timer -= Time.deltaTime;
             if (timer < 1)
             {
-                transform.Rotate(Vector3.forward * newRot * Time.deltaTime);
-
+                transform.Rotate(Vector3.forward*newRot*Time.deltaTime);
             }
         }
         else if (Mathf.Abs(rb.velocity.x) + Mathf.Abs(rb.velocity.y) < .5f)
@@ -53,7 +45,6 @@ public class PeriodicElement : MonoBehaviour
             force = Random.Range(forceRange.x, forceRange.y);
             rb.AddForce(transform.up*force*Time.deltaTime);
             timer = Random.Range(timerRange.x, timerRange.y);
-
         }
         else
         {
@@ -61,27 +52,24 @@ public class PeriodicElement : MonoBehaviour
         }
     }
 
-    void OnMouseDown()
+    private void OnMouseDown()
     {
         //Debug.Log("eddy");
         elementChase.AddElement(name);
         anim.SetTrigger("Poof");
-
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         //Debug.Log("pizza");
-        
-            Respawn();
 
-        
+        Respawn();
     }
 
-     public void Respawn()
-     {
+    public void Respawn()
+    {
         //Debug.Log("pizza");
-        
+
         elementSpawner.Respawn(gameObject);
         //gameObject.SetActive(false);
     }

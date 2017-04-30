@@ -1,29 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Letter : MonoBehaviour {
-    [SerializeField]
-    float startingOffset;
-
-    [SerializeField] private string animationName;
-    [SerializeField]
-    private bool playOnStart = true;
+public class Letter : MonoBehaviour
+{
+    [SerializeField] private readonly bool playOnStart = true;
     private Animator anim;
-	// Use this for initialization
-	void Start () {
+    [SerializeField] private string animationName;
+    [SerializeField] private float startingOffset;
+    // Use this for initialization
+    private void Start()
+    {
         anim = GetComponent<Animator>();
-	    if (playOnStart)
-	    {
+        if (playOnStart)
+        {
             anim.Play(animationName, -1, startingOffset);
-     
         }
     }
-	
-	// Update is called once per frame
-	public void PlayAnimation ( ) {
-        anim.Play(animationName);
 
+    // Update is called once per frame
+    public void PlayAnimation()
+    {
+        anim.Play(animationName);
     }
 
     public void PlayAudio()

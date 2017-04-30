@@ -1,27 +1,22 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class TestManager : MonoBehaviour
 {
-    [SerializeField]
-    GameObject prefab;
-    [SerializeField]
-    GameObject spawn;
-    [SerializeField]
-    AudioSource laser;
+    [SerializeField] private AudioSource laser;
+    [SerializeField] private GameObject prefab;
+    [SerializeField] private GameObject spawn;
 
-    void Start()
+    private void Start()
     {
         PoolManager.instance.CreatePool(prefab, 10);
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             PoolManager.instance.ReuseObject(prefab, spawn.transform.position, spawn.transform.rotation);
             laser.Play();
         }
-
     }
 }

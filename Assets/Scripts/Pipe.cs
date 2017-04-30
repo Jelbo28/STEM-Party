@@ -1,25 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Pipe : MonoBehaviour
 {
-    [SerializeField] private int pipeType = 0;
-    // 0 = Curved, 1 = Straight, 2 = Crossing
-      public Pipe[] neighbors;
-     public bool correctRot = false;
-    [SerializeField] private bool interactable = true;
-     public bool finalPipe = false;
+    [SerializeField] private readonly float[] acceptableRotations = new float[4];
+    [SerializeField] private readonly bool interactable = true;
+    [SerializeField] private readonly int pipeType = 0;
+    [SerializeField] private readonly bool scrambleIt = true;
+    public bool correctRot;
     [SerializeField] private float currRotation;
-    private int scramble;
-    [SerializeField] private float[] acceptableRotations = new float[4];
-    [SerializeField] private bool scrambleIt = true;
-    // Use this for initialization
+    public bool finalPipe = false;
     private PipesManager manager;
-    void Start ()
+    public Pipe[] neighbors;
+    private int scramble;
+
+    private void Start()
     {
-        manager = GameObject.FindObjectOfType<PipesManager>();
-        for (int i = 0; i < acceptableRotations.Length; i++)
+        manager = FindObjectOfType<PipesManager>();
+        for (var i = 0; i < acceptableRotations.Length; i++)
         {
             currRotation = transform.rotation.eulerAngles.z;
 
@@ -39,31 +36,22 @@ public class Pipe : MonoBehaviour
                 case 2:
                     Rotate();
                     break;
-
             }
-
         }
         if (interactable && scrambleIt)
         {
             scramble = Random.Range(1, 4);
-            for (int i = 0; i < scramble; i++)
+            for (var i = 0; i < scramble; i++)
             {
                 Rotate();
             }
         }
-
     }
-	
-	// Update is called once per frame
-	void Update ()
-	{
-        CheckRotation();
 
-     //   if (Input.GetKeyDown(KeyCode.Space) && interactable)
-	    //{
-     //       Rotate();
-	    //}
-	}
+    private void Update()
+    {
+        CheckRotation();
+    }
 
     public void Rotate()
     {
@@ -74,34 +62,27 @@ public class Pipe : MonoBehaviour
 
             CheckRotation();
         }
-
     }
 
-    void CheckRotation()
+    private void CheckRotation()
     {
-        foreach (float rotation in acceptableRotations)
+        foreach (var rotation in acceptableRotations)
         {
             if (currRotation == rotation)
             {
                 correctRot = true;
                 break;
             }
-            else
-            {
-                correctRot = false;
-            }
+            correctRot = false;
         }
-
-        
     }
 
     public void ActivateNeighbors()
     {
         if (!finalPipe)
         {
-            foreach (Pipe neighbor in neighbors)
+            foreach (var neighbor in neighbors)
             {
-
                 neighbor.GetComponent<Animator>().SetBool("Break", !neighbor.correctRot);
                 manager.minigameController.AddPoints(1);
                 neighbor.GetComponent<Animator>().SetTrigger("PipeGo");
@@ -111,16 +92,10 @@ public class Pipe : MonoBehaviour
         {
             manager.SetLevel();
         }
-
     }
 
     public void GameOver()
     {
         Debug.Log("Game Over!! You freaking suck at this!");
     }
-
-    //void OnMouseDown()
-    //{
-    //    Rotate();
-    //}
 }

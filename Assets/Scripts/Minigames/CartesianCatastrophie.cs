@@ -3,13 +3,16 @@ using UnityEngine.UI;
 
 public class CartesianCatastrophie : MonoBehaviour
 {
-    [SerializeField] private float instanceAmmount = 3;
+    [SerializeField] private readonly float instanceAmmount = 3;
     [SerializeField] private readonly float timerLength = 5f;
     private Animator anim;
     private Animator[] blocks;
     [SerializeField] public Vector2 coordinates;
     [SerializeField] private Text[] coordinatesText;
+    public int correct;
     private float currInstanceAmmount;
+    private MinigameController minigameController;
+    [HideInInspector] public PlayerInfo[] playerInfo;
     [SerializeField] private TopDown2DMovement[] players;
     [SerializeField] private bool reset = true;
     [SerializeField] private float resetTimer;
@@ -17,12 +20,6 @@ public class CartesianCatastrophie : MonoBehaviour
     private float timer = 5f;
     [SerializeField] private bool timerOn;
     [SerializeField] private Text timerText;
-    [HideInInspector]
-    public PlayerInfo[] playerInfo;
-
-    public int correct = 0;
-
-    private MinigameController minigameController;
     // Use this for initialization
     private void Awake()
     {
@@ -82,9 +79,9 @@ public class CartesianCatastrophie : MonoBehaviour
     public void SetCoordinates()
     {
         coordinatesText[1].text = coordinates.ToString("f0");
-        foreach (TopDown2DMovement player in players)
+        foreach (var player in players)
         {
-                //player.correctTile = correct;
+            //player.correctTile = correct;
             player.go = true;
         }
         timerOn = true;

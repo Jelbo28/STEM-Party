@@ -4,19 +4,10 @@ public class DeathZone : MonoBehaviour
 {
     [SerializeField] private string[] killNames;
     private Transform toKill;
-    // Use this for initialization
-    private void Start()
-    {
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-    }
 
     private void OnTriggerEnter(Collider other)
     {
-        foreach (string target in killNames)
+        foreach (var target in killNames)
         {
             //Debug.Log(other.gameObject.name);
             if (other.gameObject.name == target)

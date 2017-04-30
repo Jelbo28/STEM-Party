@@ -1,34 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
-public class PipesManager : MonoBehaviour {
-    [System.Serializable]
-    public class PipeLevel
-    {
-        public GameObject levelObject;
-        public Animator catalystPipe;
-        public int levelTimer;
-    }
-    [SerializeField] private PipeLevel[] levels;
-    [SerializeField] private int currLevel = 0;
-    [SerializeField] private float levelTimer = 0;
-    private RadialProgressMeter progressMeter;
+public class PipesManager : MonoBehaviour
+{
+    [SerializeField] private int currLevel;
     private DisplayManager displayManager;
+    private bool gameOver;
+    [SerializeField] private PipeLevel[] levels;
+    [SerializeField] private float levelTimer;
     public MinigameController minigameController;
-    private bool gameOver = false;
-    // Use this for initialization
-    void Start ()
+    private RadialProgressMeter progressMeter;
+
+    private void Start()
     {
         minigameController = FindObjectOfType<MinigameController>();
         displayManager = FindObjectOfType<DisplayManager>();
         progressMeter = FindObjectOfType<RadialProgressMeter>();
-BeginGame();
+        BeginGame();
     }
 
-    // Update is called once per frame
-    void Update ()
-	{
+    private void Update()
+    {
         if (currLevel > 0 && !gameOver)
         {
             if (levelTimer > 0)
@@ -43,7 +35,6 @@ BeginGame();
         {
             displayManager.EndGameScreen();
         }
-
     }
 
     public void SetLevel()
@@ -61,15 +52,20 @@ BeginGame();
         {
             Time.timeScale = 1;
             gameOver = true;
-            //Debug.Log("Game Over");
         }
-
     }
 
-    void BeginGame()
+    private void BeginGame()
     {
         displayManager.BeginGame();
-        //yield return new WaitForSeconds(3f);
         SetLevel();
+    }
+
+    [Serializable]
+    public class PipeLevel
+    {
+        public Animator catalystPipe;
+        public GameObject levelObject;
+        public int levelTimer;
     }
 }

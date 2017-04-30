@@ -1,37 +1,29 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
+﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneChanger : MonoBehaviour
 {
-
     private float delay;
     private bool quit;
-    void Start() {
+
+    private void Start()
+    {
         DontDestroyOnLoad(gameObject);
     }
-    void Update()
-    {
 
- 
+    private void Update()
+    {
     }
 
     public void LoadSceneByName(string sceneName)
     {
-
-            StartCoroutine(SceneDelay(sceneName));
-        
+        StartCoroutine(SceneDelay(sceneName));
     }
 
     public void LoadSceneByIndex(int sceneNumber)
     {
- 
-
-     
-            StartCoroutine(SceneDelay(sceneNumber.ToString()));
-      
+        StartCoroutine(SceneDelay(sceneNumber.ToString()));
     }
 
     public void SetDelay(float delaySet)
@@ -39,21 +31,18 @@ public class SceneChanger : MonoBehaviour
         delay = delaySet;
     }
 
-    IEnumerator SceneDelay(string scene)
+    private IEnumerator SceneDelay(string scene)
     {
         yield return new WaitForSeconds(delay);
         if (!quit)
         {
             SceneManager.LoadScene(scene);
-
         }
         else
         {
             Application.Quit();
-
         }
-    } 
-
+    }
 
     public void Quit()
     {

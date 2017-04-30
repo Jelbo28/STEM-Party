@@ -1,25 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerInfo : MonoBehaviour {
-
-    [SerializeField]
-    public string characterName;
-    [SerializeField]
-    public string extension;
-    [SerializeField]
-    public bool AI;
-    [SerializeField]
-    public bool thisUser;
-    [SerializeField]
-    public int mingameWins;
-    [SerializeField]
-    public int mingamePts;
-    [SerializeField]
-    public int totalPts;
-
-    [SerializeField] public int place = 0;
+public class PlayerInfo : MonoBehaviour
+{
+    [SerializeField] public bool AI;
+    [SerializeField] public string characterName;
+    [SerializeField] public string extension;
+    [SerializeField] public int mingamePts;
+    [SerializeField] public int mingameWins;
+    [SerializeField] public int place;
+    [SerializeField] public bool thisUser;
+    [SerializeField] public int totalPts;
 
     public void SetPlace(int placeTo)
     {

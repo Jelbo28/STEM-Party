@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-    Dictionary<int, Queue<ObjectInstance>> poolDictionary = new Dictionary<int, Queue<ObjectInstance>>();
+    private static PoolManager _instance;
 
-    static PoolManager _instance;
+    private readonly Dictionary<int, Queue<ObjectInstance>> poolDictionary =
+        new Dictionary<int, Queue<ObjectInstance>>();
 
     public static PoolManager instance
     {
@@ -21,45 +22,42 @@ public class PoolManager : MonoBehaviour
 
     public void CreatePool(GameObject prefab, int poolSize)
     {
-        int poolKey = prefab.GetInstanceID();
+        var poolKey = prefab.GetInstanceID();
 
-        GameObject poolHolder = new GameObject(prefab.name + "pool");
+        var poolHolder = new GameObject(prefab.name + "pool");
         poolHolder.transform.parent = transform;
 
         if (!poolDictionary.ContainsKey(poolKey))
         {
             poolDictionary.Add(poolKey, new Queue<ObjectInstance>());
 
-            for (int i = 0; i < poolSize; i++)
+            for (var i = 0; i < poolSize; i++)
             {
-                ObjectInstance newObject = new ObjectInstance (Instantiate (prefab) as GameObject);
+                var newObject = new ObjectInstance(Instantiate(prefab));
                 poolDictionary[poolKey].Enqueue(newObject);
                 newObject.SetParent(poolHolder.transform);
-
             }
         }
     }
 
     public void ReuseObject(GameObject prefab, Vector3 position, Quaternion rotation)
     {
-        int poolKey = prefab.GetInstanceID();
+        var poolKey = prefab.GetInstanceID();
 
         if (poolDictionary.ContainsKey(poolKey))
         {
-            ObjectInstance objectToReuse = poolDictionary[poolKey].Dequeue();
+            var objectToReuse = poolDictionary[poolKey].Dequeue();
             poolDictionary[poolKey].Enqueue(objectToReuse);
             objectToReuse.Reuse(position, rotation);
-
         }
     }
 
     public class ObjectInstance
     {
-        GameObject gameObject;
-        Transform transform;
-
-        bool hasPoolObjectComponent;
-        PoolObject poolObjectScript;
+        private readonly GameObject gameObject;
+        private readonly bool hasPoolObjectComponent;
+        private readonly PoolObject poolObjectScript;
+        private readonly Transform transform;
 
         public ObjectInstance(GameObject objectInstance)
         {
@@ -67,12 +65,13 @@ public class PoolManager : MonoBehaviour
             transform = gameObject.transform;
             gameObject.SetActive(false);
 
-            if(gameObject.GetComponent<PoolObject>())
+            if (gameObject.GetComponent<PoolObject>())
             {
                 hasPoolObjectComponent = true;
                 poolObjectScript = gameObject.GetComponent<PoolObject>();
             }
         }
+
         public void Reuse(Vector3 position, Quaternion rotation)
         {
             if (hasPoolObjectComponent)
@@ -90,6 +89,4 @@ public class PoolManager : MonoBehaviour
             transform.parent = parent;
         }
     }
-
-
 }

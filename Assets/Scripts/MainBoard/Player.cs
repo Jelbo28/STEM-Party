@@ -1,99 +1,82 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Player : MonoBehaviour {
-    [SerializeField]
-    Tile[] tiles;
-    [SerializeField]
-    bool turn = false;
-    //[SerializeField]
-    //Vector3 offset;
-    //private Vector3 tileOffset;
-    [SerializeField]
-    int rollNum;
-    [SerializeField]
-    private int num = 1;
-
-    [SerializeField]
-    private float minDist;
-    [SerializeField]
-    public float speed;
-    [SerializeField]
-    private bool go = false;
-
-    private Transform target;
+public class Player : MonoBehaviour
+{
+    [SerializeField] private readonly bool turn = false;
     private Animator anim;
     private ParticleSystem exhaust;
+    [SerializeField] private bool go;
+    [SerializeField] private float minDist;
+    [SerializeField] private int num = 1;
     [SerializeField] private int playerNum;
-    [SerializeField]
-    public PlayerInfo thisPlayer;
-	// Use this for initialization
-	void Start () {
+    [SerializeField] private int rollNum;
+    [SerializeField] public float speed;
+    private Transform target;
+    [SerializeField] public PlayerInfo thisPlayer;
+    [SerializeField] private Tile[] tiles;
+
+    private void Start()
+    {
         thisPlayer = FindObjectOfType<ScoreManager>().transform.GetChild(playerNum).GetComponent<PlayerInfo>();
         tiles = GameObject.Find("Points").GetComponentsInChildren<Tile>();
         exhaust = GetComponentInChildren<ParticleSystem>();
         anim = transform.GetChild(0).GetComponent<Animator>();
-	    //tileOffset = Vector3.zero;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    private void Update()
+    {
         TakeTurn();
-        //if (num == 0) num++;
-        float dist = Vector3.Distance(gameObject.transform.position, tiles[num].transform.position/* + tileOffset*/);
+        var dist = Vector3.Distance(gameObject.transform.position, tiles[num].transform.position);
 
         if (go && rollNum > 0)
         {
             exhaust.Play();
-            if(dist > minDist)
+            if (dist > minDist)
             {
                 Move();
             }
             else
             {
+                if (num + 1 == tiles.Length)
+                {
+                    num = 0;
+                }
+                else
+                {
+                    num++;
+                    rollNum--;
+                    //if (rollNum == 1)
+                    //{
+                    //    tileOffset = offset;
 
-                    if(num + 1 == tiles.Length)
+                    //}
+                    //else
+                    //{
+                    //    tileOffset = Vector3.zero;
+                    //}
+                    if (rollNum <= 0)
                     {
-                        num = 0;
-                    }
-                    else
-                    {
-                        num++;
-                        rollNum--;
-                        //if (rollNum == 1)
-                        //{
-                        //    tileOffset = offset;
-
-                        //}
-                        //else
-                        //{
-                        //    tileOffset = Vector3.zero;
-                        //}
-                        if (rollNum <= 0)
-                        {
-                            gameObject.transform.LookAt(tiles[num].transform.position/* + tileOffset*/);
+                        gameObject.transform.LookAt(tiles[num].transform.position /* + tileOffset*/);
                         exhaust.Stop();
-                            go = false;
-                        }
+                        go = false;
                     }
+                }
             }
         }
-	}
-
-    void Move()
-    {
-        gameObject.transform.LookAt(tiles[num].transform.position/* + tileOffset*/);
-        gameObject.transform.position += gameObject.transform.forward * speed * Time.deltaTime;
     }
 
-    void TakeTurn()
+    private void Move()
     {
-        if (turn == true)
+        gameObject.transform.LookAt(tiles[num].transform.position /* + tileOffset*/);
+        gameObject.transform.position += gameObject.transform.forward*speed*Time.deltaTime;
+    }
+
+    private void TakeTurn()
+    {
+        if (turn)
         {
             if (Input.GetButtonDown("A Button") || Input.GetKeyDown(KeyCode.Space) && !go)
             {
-                // transform.Translate(Vector3.up * 260 * Time.deltaTime, Space.World);
                 anim.SetTrigger("Jump");
                 //rollNum = Mathf.RoundToInt(Random.Range(1, 6));
                 //go = true;

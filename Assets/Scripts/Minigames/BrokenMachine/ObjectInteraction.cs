@@ -8,6 +8,8 @@ public class ObjectInteraction : MonoBehaviour
     [SerializeField] private Color crosshairNormal;
     [SerializeField] private float damage;
     [SerializeField] private Text fixCount;
+    public bool gameOver = false;
+    private Animator hammerAnim;
     [SerializeField] private GameObject indexCard;
     private bool indexUp;
     private BrokenMachine manager;
@@ -15,8 +17,6 @@ public class ObjectInteraction : MonoBehaviour
     [SerializeField] private Text ptsCount;
     [SerializeField] private PlayerInfo thisPlayer;
     [SerializeField] private float viewDistance;
-    public bool gameOver = false;
-    private Animator hammerAnim;
 
     private void Awake()
     {
@@ -27,7 +27,7 @@ public class ObjectInteraction : MonoBehaviour
 
     private void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, viewDistance))
@@ -46,7 +46,7 @@ public class ObjectInteraction : MonoBehaviour
                 {
                     if (hit.transform.GetComponent<BrokenPart>())
                     {
-                        BrokenPart brokenPart = hit.transform.GetComponent<BrokenPart>();
+                        var brokenPart = hit.transform.GetComponent<BrokenPart>();
                         brokenPart.health -= damage;
                         hammerAnim.SetTrigger("Ham");
 
@@ -76,7 +76,6 @@ public class ObjectInteraction : MonoBehaviour
                     hit.transform.gameObject.SetActive(false);
                 }
             }
-
         }
         else
         {

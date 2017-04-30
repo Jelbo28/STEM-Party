@@ -1,24 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class NextScene : MonoBehaviour {
-    [SerializeField]
-    public bool instaQuit = false;
-    [SerializeField]
-    string sceneTo;
-    [SerializeField]
-    bool userInput;
-    [SerializeField]
-    KeyCode inputKey = KeyCode.Space;
+public class NextScene : MonoBehaviour
+{
+    [SerializeField] private readonly KeyCode inputKey = KeyCode.Space;
+    [SerializeField] public bool instaQuit;
     private SceneChanger sceneChanger;
-	// Use this for initialization
-	void Start () {
+    [SerializeField] private string sceneTo;
+    [SerializeField] private bool userInput;
+    // Use this for initialization
+    private void Start()
+    {
         sceneChanger = FindObjectOfType<SceneChanger>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
         if (Input.GetKeyDown(inputKey) && userInput)
         {
             ChangeScene(sceneTo);
@@ -32,14 +29,11 @@ public class NextScene : MonoBehaviour {
             if (sceneTo == "")
             {
                 sceneChanger.LoadSceneByName(scene);
-
             }
             else
             {
                 sceneChanger.LoadSceneByName(sceneTo);
-
             }
-
         }
         else
         {

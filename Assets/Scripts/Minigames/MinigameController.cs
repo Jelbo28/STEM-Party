@@ -1,40 +1,37 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MinigameController : MonoBehaviour
 {
     [SerializeField] private List<Animator> animators;
-    [HideInInspector]
-    public bool endGame;
-  
+    private int dataPts;
+    private DisplayManager displayManager;
+    [HideInInspector] public bool endGame;
     [SerializeField] private List<MonoBehaviour> scripts;
     [SerializeField] private float startDelay;
     [SerializeField] public GameObject[] stuffToDisable;
     [SerializeField] private MonoBehaviour[] thangs;
-    private int dataPts = 0;
-
-    private DisplayManager displayManager;
     public PlayerInfo thisPlayer;
+
     private void Start()
     {
-        foreach (PlayerInfo player in FindObjectOfType<ScoreManager>().players)
+        foreach (var player in FindObjectOfType<ScoreManager>().players)
         {
-            if (player.thisUser == true)
+            if (player.thisUser)
             {
                 thisPlayer = player;
                 break;
             }
         }
         displayManager = FindObjectOfType<DisplayManager>();
-        foreach (GameObject stuff in stuffToDisable)
+        foreach (var stuff in stuffToDisable)
         {
             //stuff.GetComponents(typeof(MonoBehaviour));
             foreach (MonoBehaviour script in stuff.GetComponents(typeof (MonoBehaviour)))
             {
-                    scripts.Add(script);
+                scripts.Add(script);
             }
-            foreach (MonoBehaviour script in scripts)
+            foreach (var script in scripts)
             {
                 script.enabled = false;
             }
@@ -42,7 +39,7 @@ public class MinigameController : MonoBehaviour
             {
                 animators.Add(anim);
             }
-            foreach (Animator anim in animators)
+            foreach (var anim in animators)
             {
                 anim.enabled = false;
             }
@@ -66,17 +63,16 @@ public class MinigameController : MonoBehaviour
 
     private void BeginGame()
     {
-        foreach (MonoBehaviour script in scripts)
+        foreach (var script in scripts)
         {
             script.enabled = true;
         }
-        foreach (Animator anim in animators)
+        foreach (var anim in animators)
         {
             anim.enabled = true;
         }
         displayManager.BeginGame();
     }
-
 
     public void AddPoints(int ammount)
     {
@@ -84,5 +80,4 @@ public class MinigameController : MonoBehaviour
         thisPlayer.mingamePts = dataPts;
         displayManager.UpdatePoints(dataPts);
     }
-
 }

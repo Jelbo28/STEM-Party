@@ -1,19 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ScoreManager : MonoBehaviour {
-    [SerializeField]
-    public PlayerInfo[] players;
-    // Use this for initialization
-    void Start () {
+public class ScoreManager : MonoBehaviour
+{
+    [SerializeField] public PlayerInfo[] players;
+
+    private void Start()
+    {
         players = GetComponentsInChildren<PlayerInfo>();
-
-
     }
-
-    // Update is called once per frame
-    void Update () {
-		
-	}
 }

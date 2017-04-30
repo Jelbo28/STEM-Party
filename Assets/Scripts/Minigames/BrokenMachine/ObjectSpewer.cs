@@ -2,17 +2,15 @@
 
 public class ObjectSpewer : MonoBehaviour
 {
-    [SerializeField] private GameObject toSpew;
-    [SerializeField] private Transform[] spawnAreas;
     [SerializeField] private float forceStrength;
-    [SerializeField] private float spawnRange;
-    [SerializeField] private Vector2 spewAmmountRange;
-
     public bool go;
     private int randTransform;
+    [SerializeField] private Transform[] spawnAreas;
+    [SerializeField] private float spawnRange;
+    [SerializeField] private Vector2 spewAmmountRange;
     private GameObject tempSpew;
     private Rigidbody tempSpewRB;
-
+    [SerializeField] private GameObject toSpew;
 
     private void Start()
     {
@@ -23,11 +21,11 @@ public class ObjectSpewer : MonoBehaviour
     {
         if ( /*Input.GetKeyDown(KeyCode.Space)*/go)
         {
-            for (int j = 0; j < spawnAreas.Length; j++)
+            for (var j = 0; j < spawnAreas.Length; j++)
             {
-                int rand = Mathf.RoundToInt(Random.Range(spewAmmountRange.x, spewAmmountRange.y));
+                var rand = Mathf.RoundToInt(Random.Range(spewAmmountRange.x, spewAmmountRange.y));
 
-                for (int i = 0; i < rand; i++)
+                for (var i = 0; i < rand; i++)
                 {
                     tempSpew = Instantiate(toSpew, spawnAreas[j].position + (Random.insideUnitSphere*spawnRange),
                         Quaternion.LookRotation(Vector3.forward));
@@ -39,13 +37,4 @@ public class ObjectSpewer : MonoBehaviour
             go = false;
         }
     }
-
-
-    //Vector3 GetPointOnUnitSphereCap(Quaternion targetDirection, float angle)
-    //{
-    // float angleInRad = Random.Range(0.0f, angle) * Mathf.Deg2Rad;
-    //Vector2 PointOnCircle = (Random.insideUnitCircle.normalized * 5f) * Mathf.Sin(angleInRad);
-    //Vector3 V = new Vector3(PointOnCircle.x, PointOnCircle.y, Mathf.Cos(angleInRad));
-    // return targetDirection* V;
-    //}
 }

@@ -1,52 +1,49 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ElementSpawner : MonoBehaviour {
-
-    //Public
-    //public GameObject area;
-    [SerializeField]
-    Collider2D spawnColl;
-    public GameObject[] spawnObject;
+public class ElementSpawner : MonoBehaviour
+{
     //public int MinX = 0;
     //public int MaxX = 10;
     //public int MinY = 0;
     //public int MaxY = 10;
     public int[] objectAmmount;
-    private GameObject toCreate;
     //Private
     //private GameObject instantObject;
 
     private PoolManager poolManager;
-    void Start()
+    //Public
+    //public GameObject area;
+    [SerializeField] private Collider2D spawnColl;
+    public GameObject[] spawnObject;
+    private GameObject toCreate;
+
+    private void Start()
     {
         poolManager = FindObjectOfType<PoolManager>();
         //Debug.Log("Spawn");
-        for (int i = 0; i < spawnObject.Length; i++)
+        for (var i = 0; i < spawnObject.Length; i++)
         {
             PoolManager.instance.CreatePool(spawnObject[i], objectAmmount[i]);
-            for (int j = 0; j < objectAmmount[i]; j++)
+            for (var j = 0; j < objectAmmount[i]; j++)
             {
-                poolManager.ReuseObject(spawnObject[i], PointInArea(),Quaternion.identity);
+                poolManager.ReuseObject(spawnObject[i], PointInArea(), Quaternion.identity);
                 //spawnObject[i].transform.position = PointInArea();
                 //spawnObject[i].SetActive(true);
             }
- 
+
             //spawnObject[i].name = spawnObject[i].name;
             //spawnObject[i.transform.SetParent(GameObject.Find("ElementChase").transform.GetChild(0));
         }
-
     }
 
     public Vector2 PointInArea()
     {
-        Bounds bounds = spawnColl.bounds;
+        var bounds = spawnColl.bounds;
         Vector2 center = bounds.center;
 
         float x = 0;
         float y = 0;
-        int attempt = 0;
+        var attempt = 0;
         do
         {
             x = Random.Range(center.x - bounds.extents.x, center.x + bounds.extents.x);

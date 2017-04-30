@@ -8,34 +8,23 @@ public class ElementChase : MonoBehaviour
     private int currLevel;
     [SerializeField] private Element[] elements;
     [SerializeField] private Level[] levels;
+    private MinigameController minigameController;
     private Transform MoleculeModel;
+    [SerializeField] private Text molText;
     [SerializeField] private int playerScore;
     [SerializeField] private int remainingElements;
-    [SerializeField] private Text molText;
-    private MinigameController minigameController;
-    // Use this for initialization
+
     private void Start()
     {
         molText = GameObject.Find("MolText").GetComponent<Text>();
         minigameController = FindObjectOfType<MinigameController>();
         MoleculeModel = GameObject.Find("3D Molecule").transform;
-        //remainingElements = 0;
-        //CheckElements();
         StartCoroutine(StartGame());
-    }
-
-    private void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    currLevel++;
-        //    StartCoroutine(ChangeLevel());
-        //}
     }
 
     private void CheckElements()
     {
-        foreach (Element element in elements)
+        foreach (var element in elements)
         {
             if (element.count != element.prevCount)
             {
@@ -65,7 +54,7 @@ public class ElementChase : MonoBehaviour
 
     public void AddElement(string elementName, int howMany = 1, bool setNew = false)
     {
-        foreach (Element element in elements)
+        foreach (var element in elements)
         {
             if (element.name == elementName)
             {
@@ -105,7 +94,7 @@ public class ElementChase : MonoBehaviour
 
         MoleculeModel.GetChild(0).GetChild(currLevel).gameObject.SetActive(true);
         MoleculeModel.GetChild(0).GetComponent<Animator>().SetInteger("MoveType", levels[currLevel].molMoveType);
-        for (int i = 0; i < levels[currLevel].elementsUsed.Length; i++)
+        for (var i = 0; i < levels[currLevel].elementsUsed.Length; i++)
         {
             AddElement(levels[currLevel].elementsUsed[i], levels[currLevel].howMany[i], true);
         }
@@ -125,12 +114,11 @@ public class ElementChase : MonoBehaviour
         }
         else
         {
-            //minigameController.endGame = true;
             Debug.Log("Gomewover");
         }
     }
 
-    IEnumerator StartGame()
+    private IEnumerator StartGame()
     {
         yield return new WaitForSeconds(4f);
         BeginLevel();

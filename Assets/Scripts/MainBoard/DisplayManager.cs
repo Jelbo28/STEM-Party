@@ -1,59 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class DisplayManager : MonoBehaviour {
-
-    //[SerializeField]
-    //private GameObject gameStart;
-
-    [SerializeField]
-    private GameObject Fade;
-    [SerializeField]
-    private GameObject[] GameText;
-
-    [SerializeField] private Text PtsText;
-    [SerializeField]
-    private float endDelay;
-
-    private SceneChanger sceneChanger;
+public class DisplayManager : MonoBehaviour
+{
+    [SerializeField] private float endDelay;
+    [SerializeField] private GameObject Fade;
+    [SerializeField] private GameObject[] GameText;
     private string origText;
+    [SerializeField] private Text PtsText;
+    private SceneChanger sceneChanger;
 
-    // Use this for initialization
-    void Start ()
+    private void Start()
     {
         origText = PtsText.text;
         PtsText.text = origText + 0;
         sceneChanger = FindObjectOfType<SceneChanger>();
         Fade.GetComponent<Animator>().SetTrigger("FadeIn");
-        //gameStart = GameObject.Find("GameStartText");
-        //GameStart();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
+
+    private void Update()
+    {
+    }
 
     public void BeginGame()
     {
         GameText[0].SetActive(true);
-
     }
-
-    //public void GameStart()
-    //{
-    //    //gameStart.SetActive(true);
-    //    StartCoroutine(TempActivate(gameStart, 3.5f));
-    //}
-
-    //IEnumerator TempActivate(GameObject toActivate, float waitTime)
-    //{
-    //    toActivate.SetActive(true);
-    //    yield return new WaitForSeconds(waitTime);
-    //    toActivate.SetActive(false);
-    //}
 
     public void EndGameScreen()
     {
@@ -67,7 +39,6 @@ public class DisplayManager : MonoBehaviour {
         Time.timeScale -= Time.deltaTime;
         if (endDelay <= 0.5f)
         {
-            // Time.timeScale = 0;
             Cursor.visible = true;
             sceneChanger.LoadSceneByName("Minigame Results");
         }
