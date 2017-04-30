@@ -19,11 +19,13 @@ public class PeriodicElement : MonoBehaviour
     private Vector2 forceRange;
 
     private ElementSpawner elementSpawner;
+    [SerializeField] private string thisElement;
 
     // Use this for initialization
     void Awake ()
     {
-        Debug.Log("hi guys");
+        name = thisElement;
+        //Debug.Log("hi guys");
         elementSpawner = FindObjectOfType<ElementSpawner>();
         timer = Random.Range(timerRange.x, timerRange.y);
 	    rb = GetComponent<Rigidbody2D>();

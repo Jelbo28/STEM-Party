@@ -19,9 +19,9 @@ public class NextScene : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(inputKey))
+        if (Input.GetKeyDown(inputKey) && userInput)
         {
-            ChangeScene();
+            ChangeScene(sceneTo);
         }
     }
 
