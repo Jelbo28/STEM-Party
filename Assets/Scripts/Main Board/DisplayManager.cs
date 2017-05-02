@@ -4,22 +4,28 @@ using UnityEngine.UI;
 public class DisplayManager : MonoBehaviour
 {
     [SerializeField] private float endDelay;
-    [SerializeField] private GameObject Fade;
+    [SerializeField] private Animator Fade;
     [SerializeField] private GameObject[] GameText;
     private string origText;
     [SerializeField] private Text PtsText;
     private SceneChanger sceneChanger;
+    public bool endGame = false;
 
     private void Start()
     {
+        Fade = FindObjectOfType<ScoreManager>().GetComponentInChildren<Animator>();
         origText = PtsText.text;
         PtsText.text = origText + 0;
         sceneChanger = FindObjectOfType<SceneChanger>();
-        Fade.GetComponent<Animator>().SetTrigger("FadeIn");
+        Fade.SetTrigger("FadeIn");
     }
 
     private void Update()
     {
+        if (endGame)
+        {
+            EndGameScreen();
+        }
     }
 
     public void BeginGame()
@@ -34,13 +40,14 @@ public class DisplayManager : MonoBehaviour
         if (!(endDelay <= 3)) return;
         GameText[1].GetComponent<Text>().text = "Ending in... " + Mathf.RoundToInt(endDelay);
         if (!(endDelay <= 1.5f)) return;
-        Fade.GetComponent<Animator>().SetTrigger("FadeOut");
+        Fade.SetTrigger("FadeOut");
         if (!(endDelay <= 1)) return;
-        Time.timeScale -= Time.deltaTime;
-        if (endDelay <= 0.5f)
+        //Time.timeScale -= Time.deltaTime;
+        if (!(endDelay <= 0.5f))
         {
             Cursor.visible = true;
             sceneChanger.LoadSceneByName("Minigame Results");
+            endGame = false;
         }
     }
 

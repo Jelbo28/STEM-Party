@@ -2,10 +2,11 @@
 
 public class Pipe : MonoBehaviour
 {
-    [SerializeField] private readonly float[] acceptableRotations = new float[4];
-    [SerializeField] private readonly bool interactable = true;
-    [SerializeField] private readonly int pipeType = 0;
-    [SerializeField] private readonly bool scrambleIt = true;
+    [SerializeField]
+    private float[] acceptableRotations = new float[4];
+    [SerializeField] private bool interactable = true;
+    [SerializeField] private int pipeType = 0;
+    [SerializeField] private bool scrambleIt = true;
     public bool correctRot;
     [SerializeField] private float currRotation;
     public bool finalPipe = false;
@@ -16,7 +17,7 @@ public class Pipe : MonoBehaviour
     private void Start()
     {
         manager = FindObjectOfType<PipesManager>();
-        for (var i = 0; i < acceptableRotations.Length; i++)
+        for (int i = 0; i < acceptableRotations.Length; i++)
         {
             currRotation = transform.rotation.eulerAngles.z;
 
@@ -41,7 +42,7 @@ public class Pipe : MonoBehaviour
         if (interactable && scrambleIt)
         {
             scramble = Random.Range(1, 4);
-            for (var i = 0; i < scramble; i++)
+            for (int i = 0; i < scramble; i++)
             {
                 Rotate();
             }
@@ -66,7 +67,7 @@ public class Pipe : MonoBehaviour
 
     private void CheckRotation()
     {
-        foreach (var rotation in acceptableRotations)
+        foreach (float rotation in acceptableRotations)
         {
             if (currRotation == rotation)
             {
@@ -96,6 +97,9 @@ public class Pipe : MonoBehaviour
 
     public void GameOver()
     {
-        Debug.Log("Game Over!! You freaking suck at this!");
+        manager.minigameController.thisPlayer.mingamePts -= 5;
+        manager.minigameController.thisPlayer.SetPlace(3);
+        manager.minigameController.displayManager.endGame = true;
+        //Debug.Log("Game Over!! You freaking suck at this!");
     }
 }

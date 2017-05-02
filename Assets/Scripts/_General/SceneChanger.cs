@@ -4,21 +4,50 @@ using UnityEngine.SceneManagement;
 
 public class SceneChanger : MonoBehaviour
 {
-    private float delay;
-    private bool quit;
-
-    private void Start()
+    [System.Serializable]
+    public class MinigameInfo
     {
-        DontDestroyOnLoad(gameObject);
+        public string minigameName;
+        public string gameInfo;
     }
 
-    private void Update()
+    [SerializeField] private MinigameInfo[] allMinigames = new MinigameInfo[6];
+    public MinigameInfo currentMinigame;
+    [SerializeField]
+    private Animator fadeAnimator;
+
+    private float delay;
+    private bool quit;
+    public string sceneAfter;
+    [SerializeField] public bool howPlay = false;
+    private void Start()
     {
+        fadeAnimator = FindObjectOfType<ScoreManager>().GetComponentInChildren<Animator>();
+        DontDestroyOnLoad(gameObject);
     }
 
     public void LoadSceneByName(string sceneName)
     {
-        StartCoroutine(SceneDelay(sceneName));
+        if (!howPlay)
+        {
+            StartCoroutine(SceneDelay(sceneName));
+
+        }
+        else
+        {
+            //sceneAfter = sceneName;
+            StartCoroutine(SceneDelay(sceneAfter));
+            howPlay = false;
+        }
+    }
+
+    public void SetMinigameInfo()
+    {
+        foreach (MinigameInfo minigame in allMinigames)
+        {
+            if (minigame.minigameName == sceneAfter)
+                currentMinigame = minigame;
+        }
     }
 
     public void LoadSceneByIndex(int sceneNumber)
@@ -31,8 +60,11 @@ public class SceneChanger : MonoBehaviour
         delay = delaySet;
     }
 
+
+
     private IEnumerator SceneDelay(string scene)
     {
+        fadeAnimator.SetTrigger("FadeOut");
         yield return new WaitForSeconds(delay);
         if (!quit)
         {

@@ -130,7 +130,7 @@ public class TopDown2DMovement : MonoBehaviour
         Debug.Log(name + " = " + playersAlive.Length);
         if (playersAlive.Length == 1)
         {
-            minigameController.endGame = true;
+            minigameController.displayManager.endGame = true;
             thisPlayer.mingameWins += 10;
         }
 

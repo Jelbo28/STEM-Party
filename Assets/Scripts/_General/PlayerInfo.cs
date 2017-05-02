@@ -11,6 +11,11 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField] public bool thisUser;
     [SerializeField] public int totalPts;
 
+    public void CompilePoints(int totalScore)
+    {
+        totalPts += totalScore;
+    }
+
     public void SetPlace(int placeTo)
     {
         place = placeTo;

@@ -17,9 +17,16 @@ public class ObjectInteraction : MonoBehaviour
     [SerializeField] private Text ptsCount;
     [SerializeField] private PlayerInfo thisPlayer;
     [SerializeField] private float viewDistance;
-
+    [SerializeField]
+    private AudioClip[] hamSounds = new AudioClip[2];
+    private AudioSource audioSource;
+    [SerializeField]
+    private float hamTimer;
+    private float origHamTimer;
     private void Awake()
     {
+        origHamTimer = hamTimer;
+        audioSource = GetComponent<AudioSource>();
         manager = FindObjectOfType<BrokenMachine>();
         thisPlayer = GetComponentInParent<MachineController>().currPlayer;
         hammerAnim = transform.GetChild(0).GetComponent<Animator>();
@@ -27,7 +34,7 @@ public class ObjectInteraction : MonoBehaviour
 
     private void Update()
     {
-        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, viewDistance))
@@ -41,33 +48,42 @@ public class ObjectInteraction : MonoBehaviour
                 indexCard.GetComponentInChildren<Text>().text = hit.transform.name;
                 crosshair.color = crosshairHighlight;
 
-
-                if (Input.GetMouseButtonDown(0))
+                if (hamTimer < 0)
                 {
-                    if (hit.transform.GetComponent<BrokenPart>())
+                    if (Input.GetMouseButtonDown(0))
                     {
-                        var brokenPart = hit.transform.GetComponent<BrokenPart>();
-                        brokenPart.health -= damage;
-                        hammerAnim.SetTrigger("Ham");
-
-                        if (brokenPart.health <= 0 &&
-                            brokenPart.broken)
+                        if (hit.transform.GetComponent<BrokenPart>())
                         {
-                            hit.transform.parent.GetComponent<MachineController>().ChangePart(brokenPart, true);
-                            brokenPart.health =
-                                brokenPart.origHealth;
-                            brokenPart.broken = false;
-                            parts++;
-                            fixCount.text = parts + "/" + 4;
-                            if (parts == 4)
+                            BrokenPart brokenPart = hit.transform.GetComponent<BrokenPart>();
+                            brokenPart.health -= damage;
+                            audioSource.PlayOneShot(hamSounds[Random.Range(0, hamSounds.Length)]);
+                            hammerAnim.SetTrigger("Ham");
+
+                            if (brokenPart.health <= 0 &&
+                                brokenPart.broken)
                             {
-                                thisPlayer.SetPlace(1);
-                                thisPlayer.mingameWins += 10;
-                                manager.EndGame();
+                                hit.transform.parent.GetComponent<MachineController>().ChangePart(brokenPart, true);
+                                brokenPart.health =
+                                    brokenPart.origHealth;
+                                brokenPart.broken = false;
+                                parts++;
+                                fixCount.text = parts + "/" + 4;
+                                if (parts == 4)
+                                {
+                                    thisPlayer.SetPlace(1);
+                                    thisPlayer.mingameWins += 10;
+                                    manager.EndGame();
+                                }
                             }
+                            hamTimer = origHamTimer;
                         }
                     }
                 }
+                else
+                {
+                    hamTimer -= Time.deltaTime;
+                }
+
                 if (!Input.GetMouseButtonDown(1)) return;
                 if (hit.transform.name == "Data Point")
                 {
@@ -84,7 +100,6 @@ public class ObjectInteraction : MonoBehaviour
                 indexCard.GetComponent<Animator>().SetTrigger("SlideDown");
                 indexUp = false;
             }
-            //indexCard.GetComponentInChildren<Text>().text = " ";
             crosshair.color = crosshairNormal;
         }
     }

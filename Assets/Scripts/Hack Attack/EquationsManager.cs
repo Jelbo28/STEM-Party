@@ -60,7 +60,7 @@ public class EquationsManager : MonoBehaviour {
         }
          else
          {
-             minigameController.endGame = true;
+             minigameController.displayManager.endGame = true;
          }
 
 

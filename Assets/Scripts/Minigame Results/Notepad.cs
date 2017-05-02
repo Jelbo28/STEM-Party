@@ -45,9 +45,9 @@ public class Notepad : MonoBehaviour {
                 {
                     BScoreText.text = posBonusMessages[Mathf.RoundToInt(Random.Range(0, posBonusMessages.Length))] + " = " + bonusScore;
                 }
-                totalScore = players[i].mingamePts + players[i].mingameWins + players[i].totalPts + bonusScore;
+                totalScore = players[i].mingamePts + players[i].mingameWins + bonusScore;
                 TScoreText.text = "Total = " + (totalScore > 0 ? "+" : "-") + totalScore;
-
+                players[i].totalPts += totalScore;
             }
         }
 	}

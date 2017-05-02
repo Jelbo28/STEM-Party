@@ -39,7 +39,7 @@ public class TextManager : MonoBehaviour
             creditComponents[i].SetActive(true);
             i++;
         }
-        minigameController.endGame = true;
+        minigameController.displayManager.endGame = true;
     }
 
     private IEnumerator CountTo(int target)

@@ -140,7 +140,7 @@ public class CartesianCatastrophie : MonoBehaviour
     {
         anim.speed = 0;
         //transform.GetChild(1).gameObject.SetActive(true);
-        minigameController.endGame = true;
+        minigameController.displayManager.endGame = true;
         Debug.Log("Gameover, dude.");
     }
 

@@ -24,6 +24,6 @@ public class BrokenMachine : MonoBehaviour
                 machines[i].gameOver = true;
             }
         }
-        minigameController.endGame = true;
+        minigameController.displayManager.endGame = true;
     }
 }

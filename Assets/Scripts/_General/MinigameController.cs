@@ -5,8 +5,7 @@ public class MinigameController : MonoBehaviour
 {
     [SerializeField] private List<Animator> animators;
     private int dataPts;
-    private DisplayManager displayManager;
-    [HideInInspector] public bool endGame;
+    public DisplayManager displayManager;
     [SerializeField] private List<MonoBehaviour> scripts;
     [SerializeField] private float startDelay;
     [SerializeField] public GameObject[] stuffToDisable;
@@ -15,7 +14,7 @@ public class MinigameController : MonoBehaviour
 
     private void Start()
     {
-        foreach (var player in FindObjectOfType<ScoreManager>().players)
+        foreach (PlayerInfo player in FindObjectOfType<ScoreManager>().players)
         {
             if (player.thisUser)
             {
@@ -24,14 +23,14 @@ public class MinigameController : MonoBehaviour
             }
         }
         displayManager = FindObjectOfType<DisplayManager>();
-        foreach (var stuff in stuffToDisable)
+        foreach (GameObject stuff in stuffToDisable)
         {
             //stuff.GetComponents(typeof(MonoBehaviour));
             foreach (MonoBehaviour script in stuff.GetComponents(typeof (MonoBehaviour)))
             {
                 scripts.Add(script);
             }
-            foreach (var script in scripts)
+            foreach (MonoBehaviour script in scripts)
             {
                 script.enabled = false;
             }
@@ -39,14 +38,13 @@ public class MinigameController : MonoBehaviour
             {
                 animators.Add(anim);
             }
-            foreach (var anim in animators)
+            foreach (Animator anim in animators)
             {
                 anim.enabled = false;
             }
         }
     }
 
-    // Update is called once per frame
     private void Update()
     {
         if (startDelay >= 0)
@@ -57,17 +55,15 @@ public class MinigameController : MonoBehaviour
         {
             BeginGame();
         }
-        if (!endGame) return;
-        displayManager.EndGameScreen();
     }
 
     private void BeginGame()
     {
-        foreach (var script in scripts)
+        foreach (MonoBehaviour script in scripts)
         {
             script.enabled = true;
         }
-        foreach (var anim in animators)
+        foreach (Animator anim in animators)
         {
             anim.enabled = true;
         }

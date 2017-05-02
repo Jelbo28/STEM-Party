@@ -13,9 +13,16 @@ public class ElementChase : MonoBehaviour
     [SerializeField] private Text molText;
     [SerializeField] private int playerScore;
     [SerializeField] private int remainingElements;
-
+    private PlayerInfo[] players;
+    private PlayerInfo thisPlayer;
     private void Start()
     {
+        players = FindObjectOfType<ScoreManager>().GetComponentsInChildren<PlayerInfo>();
+        foreach (PlayerInfo player in players)
+        {
+            if (player.thisUser == true)
+                thisPlayer = player;
+        }
         molText = GameObject.Find("MolText").GetComponent<Text>();
         minigameController = FindObjectOfType<MinigameController>();
         MoleculeModel = GameObject.Find("3D Molecule").transform;
@@ -24,7 +31,7 @@ public class ElementChase : MonoBehaviour
 
     private void CheckElements()
     {
-        foreach (var element in elements)
+        foreach (Element element in elements)
         {
             if (element.count != element.prevCount)
             {
@@ -54,7 +61,7 @@ public class ElementChase : MonoBehaviour
 
     public void AddElement(string elementName, int howMany = 1, bool setNew = false)
     {
-        foreach (var element in elements)
+        foreach (Element element in elements)
         {
             if (element.name == elementName)
             {
@@ -94,7 +101,7 @@ public class ElementChase : MonoBehaviour
 
         MoleculeModel.GetChild(0).GetChild(currLevel).gameObject.SetActive(true);
         MoleculeModel.GetChild(0).GetComponent<Animator>().SetInteger("MoveType", levels[currLevel].molMoveType);
-        for (var i = 0; i < levels[currLevel].elementsUsed.Length; i++)
+        for (int i = 0; i < levels[currLevel].elementsUsed.Length; i++)
         {
             AddElement(levels[currLevel].elementsUsed[i], levels[currLevel].howMany[i], true);
         }
@@ -103,19 +110,24 @@ public class ElementChase : MonoBehaviour
 
     private IEnumerator ChangeLevel()
     {
-        if (currLevel < levels.Length)
+        if (remainingElements <= 0)
         {
-            if (remainingElements <= 0)
+            MoleculeModel.GetChild(0).GetComponent<Animator>().SetTrigger("Exit");
+            if (currLevel < levels.Length)
             {
-                MoleculeModel.GetChild(0).GetComponent<Animator>().SetTrigger("Exit");
                 yield return new WaitForSeconds(2f);
                 BeginLevel();
+
+            }
+            else
+            {
+                thisPlayer.SetPlace(1);
+                thisPlayer.mingameWins += 10;
+                //yield return new WaitForSeconds(1f);
+                minigameController.displayManager.endGame = true;
             }
         }
-        else
-        {
-            Debug.Log("Gomewover");
-        }
+
     }
 
     private IEnumerator StartGame()

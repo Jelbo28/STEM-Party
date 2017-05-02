@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class LockedGame : MonoBehaviour {
+public class LockedGame : MonoBehaviour
+{
+    [SerializeField] private GameObject lockedGameButton;
     [SerializeField]
     private int lockTotal = 5;
     private int gameLock = 0;
     private List<int> lockNums = new List<int>();
-	// Use this for initialization
-	void Start () {
+    private Text buttonName;
+
+	void Start ()
+	{
         DontDestroyOnLoad(gameObject);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	    buttonName = lockedGameButton.GetComponentInChildren<Text>();
 	}
 
     public void Unlock(int lockNum)
@@ -27,7 +27,8 @@ public class LockedGame : MonoBehaviour {
         }
         if (lockNums.Count >= lockTotal)
         {
-            GetComponent<Button>().interactable = true;
+            buttonName.text = "Credits McShooty";
+            lockedGameButton.GetComponent<Button>().interactable = true;
         }
     }
 }

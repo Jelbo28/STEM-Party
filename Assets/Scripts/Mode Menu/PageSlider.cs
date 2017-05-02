@@ -2,13 +2,14 @@
 
 public class PageSlider : MonoBehaviour
 {
-    [SerializeField] private readonly float smoothTime = 0.5f;
+    [SerializeField] private float smoothTime = 0.5f;
     [SerializeField] private GameObject[] buttons;
     private bool go;
     [SerializeField] private Vector3 newPos = new Vector3(-1600, 0, 0);
     private int pageNum;
     private Vector3 speed = Vector3.zero;
     private RectTransform thisRect;
+    [SerializeField] private int pagesLength = 4;
 
     private void Start()
     {
@@ -28,7 +29,7 @@ public class PageSlider : MonoBehaviour
                 if (buttons.Length > 0)
                 {
                     buttons[0].SetActive(pageNum > 0);
-                    buttons[1].SetActive(pageNum < 4);
+                    buttons[1].SetActive(pageNum < pagesLength && pageNum != 0);
                     buttons[2].SetActive(pageNum == 0);
                 }
 
