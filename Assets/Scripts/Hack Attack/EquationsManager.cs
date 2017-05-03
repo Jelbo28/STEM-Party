@@ -15,26 +15,23 @@ public class EquationsManager : MonoBehaviour {
     [SerializeField] private int questionNumber = 0;
     private MinigameController minigameController;
     [SerializeField] private Text correctDisplay;
-	// Use this for initialization
+
 	void Start ()
 	{
 	    minigameController = FindObjectOfType<MinigameController>();
 		NextQuestion();
 	}
 	
-	// Update is called once per frame
 	void Update () {
 		
 	}
 
     public void Respond(int answer)
     {
-        Debug.Log(answer);
         if (answer == questions[questionNumber].correctOption)
         {
             minigameController.AddPoints(3);
             correctDisplay.text = "Correct!";
-            //correctDisplay.color = answer == questions[questionNumber - 1].correctOption ? Color.green : Color.red;
             correctDisplay.GetComponent<Animator>().SetBool("Correct", true);
             StartCoroutine(NextQuestion());
         }
@@ -62,8 +59,5 @@ public class EquationsManager : MonoBehaviour {
          {
              minigameController.displayManager.endGame = true;
          }
-
-
-
     }
 }

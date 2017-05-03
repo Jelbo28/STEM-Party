@@ -41,8 +41,6 @@ public class DisplayManager : MonoBehaviour
         GameText[1].GetComponent<Text>().text = "Ending in... " + Mathf.RoundToInt(endDelay);
         if (!(endDelay <= 1.5f)) return;
         Fade.SetTrigger("FadeOut");
-        if (!(endDelay <= 1)) return;
-        //Time.timeScale -= Time.deltaTime;
         if (!(endDelay <= 0.5f))
         {
             Cursor.visible = true;
