@@ -12,7 +12,7 @@ public class PeriodicElement : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField] private float rotRange;
     [SerializeField] private string thisElement;
-    [SerializeField] private float timer;
+private float timer;
     [SerializeField] private Vector2 timerRange;
     // Use this for initialization
     private void Awake()
@@ -22,6 +22,8 @@ public class PeriodicElement : MonoBehaviour
         elementSpawner = FindObjectOfType<ElementSpawner>();
         timer = Random.Range(timerRange.x, timerRange.y);
         rb = GetComponent<Rigidbody2D>();
+        //GetComponent<BoxCollider2D>().enabled = true;
+        //GetComponent<SpriteRenderer>().sortingOrder = 1;
         elementChase = FindObjectOfType<ElementChase>();
         anim = GetComponent<Animator>();
         newRot = Random.Range(-rotRange, rotRange);
@@ -55,6 +57,9 @@ public class PeriodicElement : MonoBehaviour
     private void OnMouseDown()
     {
         //Debug.Log("eddy");
+        //GetComponent<BoxCollider2D>().enabled = false;
+        GetComponent<BoxCollider2D>().isTrigger = true;
+        GetComponent<SpriteRenderer>().sortingOrder = 4;
         elementChase.AddElement(name);
         anim.SetTrigger("Poof");
     }
@@ -62,15 +67,17 @@ public class PeriodicElement : MonoBehaviour
     private void OnTriggerExit2D(Collider2D other)
     {
         //Debug.Log("pizza");
-
-        Respawn();
+        if (other.tag == "Player")
+            Respawn();
     }
 
     public void Respawn()
     {
-        //Debug.Log("pizza");
+       // Debug.Log("pizza");
 
         elementSpawner.Respawn(gameObject);
+        GetComponent<BoxCollider2D>().isTrigger = false;
+        GetComponent<SpriteRenderer>().sortingOrder = 1;
         //gameObject.SetActive(false);
     }
 }
